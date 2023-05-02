@@ -1,8 +1,7 @@
 # hier werden alle inputs zusammgengefügt.
-import packages
 
 # bitte alle funktionen, die verwendet werden sollen einzeln so importieren, nicht ganze dateien importieren
-from functions import fib, primzahlen
+from functions.functions import fib, primzahlen
 
 if __name__ == '__main__':
     print(fib(12))
