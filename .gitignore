@@ -3,4 +3,4 @@
 /workspace.xml
 .idea/
 *.pyc
-/DMS_data/*.*
+/DMS_data/*
