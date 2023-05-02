@@ -5,3 +5,4 @@
 *.pyc
 /DMS_data/*
 .DS_Store
+.Rhistory
