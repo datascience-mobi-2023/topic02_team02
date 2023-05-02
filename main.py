@@ -10,8 +10,6 @@ if __name__ == '__main__':
 
     # die ersten x primzahlen
     print(primzahlen(100))
-# ich teste ob es funktionuckelt
-    print("dario ist schwer beeindruckt")
 
 # hier werden alle inputs zusammgengefügt.
 
