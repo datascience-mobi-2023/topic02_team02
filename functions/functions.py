@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-
+#TODO organise and add __init.py for modularity
 def fib(x: int) -> int:
     # primitive implementation der Fibonacci Folge -> einfache Rekursion
     if x == 1:
@@ -29,6 +29,7 @@ def primzahlen(x: int) -> list:
     return res
 
 def load_data_frame(file_path: list):
+    # TODO expand for error checks
     container: list = []
     for filename in file_path:
         df = pd.read_csv(filename, index_col=None, header=0)
