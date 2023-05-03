@@ -1,24 +1,16 @@
-
-# hier werden alle inputs zusammgengefügt.
-# import packages
-
-# bitte alle funktionen, die verwendet werden sollen einzeln so importieren, nicht ganze dateien importieren
-from functions.functions import fib, primzahlen
-
-if __name__ == '__main__':
-    print(fib(12))
-
-    # die ersten x primzahlen
-    print(primzahlen(100))
-
-# hier werden alle inputs zusammgengefügt.
+import numpy as np
+import pandas as pd
+import glob
 
 # bitte alle funktionen, die verwendet werden sollen einzeln so importieren, nicht ganze dateien importieren
-from functions.functions import fib, primzahlen
+from functions.functions import load_data_frame
+
+
+
+
+
 
 if __name__ == '__main__':
-    print(fib(12))
+    all_files = glob.glob(r'./DMS_data/*.csv')
 
-    # die ersten x primzahlen
-    print(primzahlen(100))
-
+    load_data_frame(all_files)

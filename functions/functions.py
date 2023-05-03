@@ -1,5 +1,5 @@
 import numpy as np
-
+import pandas as pd
 
 def fib(x: int) -> int:
     # primitive implementation der Fibonacci Folge -> einfache Rekursion
@@ -27,3 +27,12 @@ def primzahlen(x: int) -> list:
     for i in range(x):
         res.append(next(prime))
     return res
+
+def load_data_frame(file_path: list):
+    container: list = []
+    for filename in file_path:
+        df = pd.read_csv(filename, index_col=None, header=0)
+        container.append(df)
+    frame = pd.concat(container, axis=0, ignore_index=True)
+    print("The frame has been successfully loaded")
+    return frame
