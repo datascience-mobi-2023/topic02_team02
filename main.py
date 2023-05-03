@@ -8,8 +8,6 @@ import functions as func
 
 
 
-
-
 if __name__ == '__main__':
     all_files = glob.glob(r'./DMS_data/*.csv')
 

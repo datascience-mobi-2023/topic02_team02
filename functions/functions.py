@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
-#TODO organise and add __init.py for modularity
+
+### this file is for general functions, which are not related to a specific part of the project.
+
 def fib(x: int) -> int:
     # primitive implementation der Fibonacci Folge -> einfache Rekursion
     if x == 1:
