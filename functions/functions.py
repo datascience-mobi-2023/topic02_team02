@@ -30,12 +30,12 @@ def primzahlen(x: int) -> list:
         res.append(next(prime))
     return res
 
-def load_data_frame(file_path: list):
-    # TODO expand for error checks
-    container: list = []
-    for filename in file_path:
-        df = pd.read_csv(filename, index_col=None, header=0)
-        container.append(df)
+def load_data_frame(file_path: list) -> pd.DataFrame:
+    'Load list of .csv files into one data Frame'
+    # list comprehensions are better practice
+    container: list = [pd.read_csv(filename, index_col=None, header=0) for filename in file_path]
+
+    # transformation into data frame (dict)
     frame = pd.concat(container, axis=0, ignore_index=True)
     print("The frame has been successfully loaded")
     return frame
