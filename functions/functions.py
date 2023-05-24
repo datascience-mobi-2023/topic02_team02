@@ -6,7 +6,7 @@ import pandas as pd
 def fib(x: int) -> int:
     # primitive implementation der Fibonacci Folge -> einfache Rekursion
     if x == 1:
-        return 1
+        return 0
     elif x <= 1:
         return 1
     else:
