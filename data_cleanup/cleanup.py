@@ -1,22 +1,13 @@
 ## all added functions are to be declared in the init file, to ensure effortles usage
-def remove_missing_values():
-    # TODO Removing/Imputing missing values
-    pass
+import pandas as pd
+def normalisierung(frame: pd.DataFrame, upper_border: float = 1.0, lower_border: float = -1.0) -> pd.DataFrame:
+    """Der gegebene Datensatz wird normalisiert auf die Grenzen upper und lower, die per default auf 1, -1 stehen"""
+    NormalisierungsDatensatz: pd.DataFrame = frame.copy()
+    val_min: float = NormalisierungsDatensatz.DMS_score.min()
+    val_max: float = NormalisierungsDatensatz.DMS_score.max()
+    counter: int = 1
 
-def variance_filter():
-    # TODO Removing low variance columns/rows
-    pass
-
-def batch_effect_filter():
-    # TODO Removing batch effects
-    pass
-
-def outlier_filter():
-    '''Removing outlier samples: only if they are due to technical issues'''
-    # TODO check for outliers and remove them
-    pass
-
-# TODO Making sure that data is in the correct format, for example, numbers should be encoded as numeric and not as
-#  characters. Categorical variables should be factors etc.
-
-# TODO Re-ordering rows/columns in meaningful and useful ways
+    while counter <= NormalisierungsDatensatz.shape[0] - 1:
+        NormalisierungsDatensatz.iloc[counter, 2] = (NormalisierungsDatensatz.iloc[counter, 2] - val_min)/(val_max - val_min) * (upper_border - lower_border) -1
+        counter += 1
+    return NormalisierungsDatensatz
