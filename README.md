@@ -166,3 +166,16 @@ You have a high dimension matrix, that is, you have way more features
 #### Data modelling
 
 Use linear regression to evaluate the relation between variables and predicting one using others.
+
+# Research Question
+## Which other amino acid optimally substitutes the original amino acid, independent of the position?
+ - Are there trends for substitutions in specific protein regions? 
+ - In domains, evolutionary conserved regions, secondary structures
+## How do these findings correlate with other proteins?
+- Same domains
+
+## Erweiterung auf Krebs-Diagnostik
+- Welche Substitutionn in P53 korreliert mit einer Erkrankung an einem mit P53 verbundenen Karzinom?
+- Gilt das für das Gesamte Protein oder nur domänenspezifisch?
+### In case the answer is NO
+- Eine einzelne Substitution hat keinen signifikanten Einfluss auf die Entwicklung eines Karzinoms.
