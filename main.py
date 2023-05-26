@@ -1,14 +1,12 @@
-import numpy as np
 import pandas as pd
-import glob
 
-# bitte alle funktionen, die verwendet werden sollen einzeln so importieren, nicht ganze dateien importieren
+import data_cleanup as dc
 import functions as func
 
 
-
-
 if __name__ == '__main__':
-    all_files = glob.glob(r'./DMS_data/*.csv')
-
-    func.load_data_frame(all_files)
+    fpath = './DMS_data/P53_HUMAN_Giacomelli_NULL_Etoposide_2018.csv'
+    df = pd.read_csv(fpath)
+    datensatz_normalisiert = dc.set_transform_norm(df)
+    dat_norm_aufgeteilt: pd.DataFrame = dc.aufteilung_mut_pos(datensatz_normalisiert)
+    func.hmap(dat_norm_aufgeteilt)
