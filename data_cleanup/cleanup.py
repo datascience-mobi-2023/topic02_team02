@@ -1,4 +1,4 @@
-## all added functions are to be declared in the init file, to ensure effortles usage
+## all added functions are to be declared in the init file, to ensure effortless usage
 import pandas as pd
 
 def min_max_norm(frame: pd.DataFrame, upper_border: float = 1.0, lower_border: float = -1.0) -> pd.DataFrame:
