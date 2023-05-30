@@ -14,11 +14,14 @@ def min_max_norm(frame: pd.DataFrame, upper_border: float = 1.0, lower_border: f
     return NormalisierungsDatensatz
 
 def set_transform_norm(frame: pd.DataFrame) -> pd.DataFrame:
-    frame.DMS_score = (frame.DMS_score - frame.DMS_score.mean()) / frame.DMS_score.std()
+    """Set transformation operation"""
+    mean_val: float = frame.DMS_score.mean()
+    var_val: float = frame.DMS_score.std()
+    frame.DMS_score = (frame.DMS_score - mean_val) / var_val
     return frame
 
 def aufteilung_mut_pos(frame: pd.DataFrame) -> pd.DataFrame:
-    'Mutation, Position der Mutation und neue AS seden in drei separate Spalten des Frames aufgeteilt'
+    """Mutation, Position der Mutation und neue AS seden in drei separate Spalten des Frames aufgeteilt"""
     frame['position_mut'] = frame.mutant.str.slice(start=1, stop=-1).astype(int)
     frame['AS_old'] = frame.mutant.str.get(0)
     frame['AS_new'] = frame.mutant.str.get(-1)

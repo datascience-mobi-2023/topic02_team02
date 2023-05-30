@@ -3,13 +3,7 @@
 ## Contributers
 Dario Prifti, Enno Schäfer, Frido Petersen, Maximilian Fidlin 
 
-## Structure
- - All declarations of **functions** are stored in func.py
- - all declaratinos of **clases** are stored in classes.py, where each class should get its own file.
- - all required packages are stored in packages.py
- - Tests of code are suggested to run with main.py, not within a subfile. To prevent strange things from happening, import funktions not files.
-
-
+## Progress
 
 
 
