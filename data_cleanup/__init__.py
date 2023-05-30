@@ -1,5 +1,7 @@
 from data_cleanup.cleanup import *
 
 __all__ = [
-    'normalisierung'
+    'min_max_norm',
+    'set_transform_norm',
+    'aufteilung_mut_pos'
 ]
