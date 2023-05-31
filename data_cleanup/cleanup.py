@@ -32,5 +32,5 @@ def df_transform(frame: pd.DataFrame) -> pd.DataFrame:
     frame['position_mut'] = frame.mutant.str.slice(start=1, stop=-1).astype(int)
     frame['AS_old'] = frame.mutant.str.get(0)
     frame['AS_new'] = frame.mutant.str.get(-1)
-    pd.DataFrame = frame.pivot(index='AS_new', columns=['position_mut', 'AS_old'], values='DMS_score')
-    return frame
+    pivoted_frame = frame.pivot(index='AS_new', columns=['position_mut', 'AS_old'], values='DMS_score')
+    return pivoted_frame
