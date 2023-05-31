@@ -28,7 +28,7 @@ def aufteilung_mut_pos(frame: pd.DataFrame) -> pd.DataFrame:
     return frame
 
 def df_transform(frame: pd.DataFrame) -> pd.DataFrame:
-    """df wird wird in Format WT_Sequenz-Mutierte_AS umgewandelt"""
+    """df wird in Format WT_Sequenz-Mutierte_AS umgewandelt"""
     frame['position_mut'] = frame.mutant.str.slice(start=1, stop=-1).astype(int)
     frame['AS_old'] = frame.mutant.str.get(0)
     frame['AS_new'] = frame.mutant.str.get(-1)
