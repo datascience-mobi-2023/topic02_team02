@@ -34,3 +34,17 @@ def df_transform(frame: pd.DataFrame) -> pd.DataFrame:
     frame['AS_new'] = frame.mutant.str.get(-1)
     pivoted_frame = frame.pivot(index='AS_new', columns=['position_mut', 'AS_old'], values='DMS_score')
     return pivoted_frame
+
+def rmv_na(df):
+    """Ändert die Werte eines df von NaN zu 0, wenn mutierte AS der WT AS entspricht"""
+    for col in df.columns:
+        for row in df.index:
+            col_str = str(col)
+            row_str = str(row)
+            letters_row = ''.join(filter(str.isalpha, row_str))
+            letters_col = ''.join(filter(str.isalpha, col_str))
+
+            if letters_row == letters_col and pd.isna(df.loc[row, col]):
+                df.loc[row, col] = 0
+
+    return df

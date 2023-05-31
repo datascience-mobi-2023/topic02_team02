@@ -4,5 +4,6 @@ __all__ = [
     'min_max_norm',
     'set_transform_norm',
     'aufteilung_mut_pos',
-    'df_transform'
+    'df_transform',
+    'rmv_na'
 ]
