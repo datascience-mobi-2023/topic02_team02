@@ -9,7 +9,8 @@ def s_cor():
     # TODO implement correlation
     pass
 def distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
-    """aus einem Datensatz, den wir gegeben haben, direkt eine Distanzmatrix zu erstellen. Zeilen sind die alten AS, Spalten die neuen"""
+    """aus einem Datensatz, den wir gegeben haben, direkt eine Distanzmatrix zu erstellen. Zeilen in dem ausgegebenen
+    DataFrame sind die alten AS, Spalten die neuen"""
     mutations_df = dc.aufteilung_mut_pos(frame)
     subs_df = mutations_df.groupby(["AS_old", "AS_new"])
     mean_scores = subs_df.DMS_score.mean()
