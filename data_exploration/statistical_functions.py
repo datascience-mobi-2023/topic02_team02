@@ -5,3 +5,11 @@ def p_cor():
 def s_cor():
     # TODO implement correlation
     pass
+def distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
+    """..."""
+    mutations_df = dc.aufteilung_mut_pos(frame)
+    subs_df = mutations_df.groupby(["AS_old", "AS_new"])
+    mean_scores = subs_df.DMS_score.mean()
+    mean_scores_df = mean_scores.reset_index()
+    frame = mean_scores_df.pivot(index="AS_old", columns="AS_new", values="DMS_score")
+    return frame
