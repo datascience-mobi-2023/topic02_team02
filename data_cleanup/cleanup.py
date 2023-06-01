@@ -13,7 +13,7 @@ def min_max_norm(frame: pd.DataFrame, upper_border: float = 1.0, lower_border: f
         counter += 1
     return NormalisierungsDatensatz
 
-def set_transform_norm(frame: pd.DataFrame) -> pd.DataFrame:
+def z_transform(frame: pd.DataFrame) -> pd.DataFrame:
     """Set transformation operation"""
     mean_val: float = frame.DMS_score.mean()
     var_val: float = frame.DMS_score.std()
@@ -35,7 +35,7 @@ def df_transform(frame: pd.DataFrame) -> pd.DataFrame:
     pivoted_frame = frame.pivot(index='AS_new', columns=['position_mut', 'AS_old'], values='DMS_score')
     return pivoted_frame
 
-def rmv_na(df):
+def rmv_na(df: pd.DataFrame) -> pd.DataFrame:
     """Ändert die Werte eines df von NaN zu 0, wenn mutierte AS der WT AS entspricht"""
     for col in df.columns:
         for row in df.index:
