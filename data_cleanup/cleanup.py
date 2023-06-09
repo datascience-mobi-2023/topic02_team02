@@ -61,7 +61,7 @@ def low_val(df: pd.DataFrame, num_low: int,) -> pd.DataFrame:
     return None
 
 def high_val(df: pd.DataFrame, num_high: int, ) -> pd.DataFrame:
-    """Zeigt die x niedrigsten Werte eines Datensatzes an"""
+    """Zeigt die x höchsten Werte eines Datensatzes an"""
     gia_null_eto_dft = df_transform(df)
     gia_null_eto_dft_narm = gia_null_eto_dft.fillna(0)
     sum_df = pd.DataFrame(gia_null_eto_dft_narm.sum(), columns=['Sum'])
