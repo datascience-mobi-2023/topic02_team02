@@ -58,7 +58,7 @@ def low_val(df: pd.DataFrame, num_low: int,) -> pd.DataFrame:
     #print(f"Lowest {num_low} values in {Sum}:")
     print(lowest_values)
 
-    return df
+    return None
 
 def high_val(df: pd.DataFrame, num_high: int, ) -> pd.DataFrame:
     """Zeigt die x niedrigsten Werte eines Datensatzes an"""
@@ -69,5 +69,5 @@ def high_val(df: pd.DataFrame, num_high: int, ) -> pd.DataFrame:
     #print(f"\nHighest {num_high} values in Sum :")
     print(highest_values)
 
-    return df
+    return None
 
