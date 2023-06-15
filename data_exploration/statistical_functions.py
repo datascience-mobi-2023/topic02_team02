@@ -1,13 +1,7 @@
 import pandas as pd
 import data_cleanup as dc
 
-def p_cor():
-    # TODO implement correlation
-    pass
 
-def s_cor():
-    # TODO implement correlation
-    pass
 def distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
     """aus einem Datensatz, den wir gegeben haben, direkt eine Distanzmatrix zu erstellen. Zeilen in dem ausgegebenen
     DataFrame sind die alten AS, Spalten die neuen"""
