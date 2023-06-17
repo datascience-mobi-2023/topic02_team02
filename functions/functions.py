@@ -25,3 +25,22 @@ def hmap(frame: pd.DataFrame) -> None:
     plt.title('DMS Scores for Mutations')
     plt.show()
     return None
+
+
+def multiple_hmap(*frames: pd.DataFrame) -> None:
+    hmap_frames = []
+    for frame in frames:
+        hmap_frame = frame.pivot(index='AS_new', columns=['position_mut', 'AS_old'], values='DMS_score')
+        hmap_frames.append(hmap_frame)
+
+    plt.figure(figsize=(50, 8 * len(frames)))
+    sns.set(font_scale=2)
+
+    for i, hmap_frame in enumerate(hmap_frames):
+        plt.subplot(len(frames), 1, i + 1)
+        sns.heatmap(hmap_frame, cmap='seismic')
+        plt.title(f'DMS Scores for Mutations - Dataset {i + 1}')
+
+    plt.tight_layout()
+    plt.show()
+    return None
