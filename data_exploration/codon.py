@@ -42,12 +42,16 @@ def prob_as_position(position: int, variation_matrix: pd.DataFrame) -> pd.Series
 
 
 def exchange_prob_dict(frame: pd.DataFrame) -> dict:
+    """Function returns dict containing a pd.Series to each position of the sequence. The series contains all possible
+    variations through single base mutations, as well as their probability."""
     res: dict = {}
     for position in range(0, frame.shape[0]-1):
         res[position] = prob_as_position(position, frame)
 
     return res
 
+# next -> which probable variations did show an increased fitness score? Is there an AMS with increased DMS score, that
+# is not probable by single base Mutation?
 
 if __name__ == '__main__':
     p53_var_frame: pd.DataFrame = translate_codons_df(generate_codon_variations(p53_codons))
