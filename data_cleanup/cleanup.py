@@ -49,16 +49,13 @@ def rmv_na(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-def low_val(df: pd.DataFrame, num_low: int,) -> pd.DataFrame:
+def low_val(df: pd.DataFrame, num_low: int) -> pd.DataFrame:
     """Zeigt die x niedrigsten Werte eines Datensatzes an"""
-    gia_null_eto_dft = df_transform(df)
-    gia_null_eto_dft_narm = rmv_na(gia_null_eto_dft)
-    sum_df = pd.DataFrame(gia_null_eto_dft_narm.sum(), columns=['Sum'])
+    df_dft = df_transform(df)
+    df_dft_narm = rmv_na(df_dft)
+    sum_df = pd.DataFrame(df_dft_narm.sum(), columns=['Sum'])
     lowest_values = sum_df.nsmallest(num_low, "Sum")
-    #print(f"Lowest {num_low} values in {Sum}:")
-    print(lowest_values)
-
-    return None
+    return lowest_values
 
 def high_val(df: pd.DataFrame, num_high: int, ) -> pd.DataFrame:
     """Zeigt die x höchsten Werte eines Datensatzes an"""
