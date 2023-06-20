@@ -7,5 +7,6 @@ __all__ = [
     "translate_codons_df",
     "generate_codon_variations",
     "prob_as_position",
-    "exchange_prob_dict"
+    "exchange_prob_dict",
+    "select_smut"
 ]
