@@ -47,15 +47,13 @@ def multiple_hmap(*frames: pd.DataFrame) -> None:
 
 
 def df_mean(df: pd.DataFrame) -> pd.DataFrame:
-    'calculates the means of each AA of a df'
-
     df_trafo: pd.DataFrame = dc.df_transform(df)
     df_trafo_narmv: pd.DataFrame = dc.rmv_na(df_trafo)
     df_trafo_narmv_mean = pd.DataFrame(columns=df_trafo_narmv.columns)
 
-    for column in df_trafo_narmv_mean.columns:
+    for column in df_trafo_narmv.columns:
         if column != 'position_mut' and column != 'AS_old':
-            column_mean = df_trafo_narmv_mean[column].mean()
+            column_mean = df_trafo_narmv[column].mean()
             df_trafo_narmv_mean.loc[0, column] = column_mean
 
     df_trafo_narmv_mean = df_trafo_narmv_mean.reset_index(drop=True)
