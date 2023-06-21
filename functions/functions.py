@@ -71,5 +71,5 @@ def multiple_linegraph(*dataframes):
 
     plt.xlabel('position_mut')
     plt.ylabel('DMS_score')
-    plt.legend(dataframes)  # Add legend using the DataFrame names
+    plt.legend(dataframes)
     plt.show()
