@@ -28,7 +28,6 @@ def hmap(frame: pd.DataFrame) -> None:
 
 
 def multiple_hmap(*frames: pd.DataFrame) -> None:
-    """Schnelle darstellung mehrerer Heatmap's"""
     hmap_frames = []
     for frame in frames:
         hmap_frame = frame.pivot(index='AS_new', columns=['position_mut', 'AS_old'], values='DMS_score')
@@ -61,8 +60,7 @@ def df_mean(df: pd.DataFrame) -> pd.DataFrame:
 
     return df_trafo_narmv_mean
 
-
-def multiple_linegraph(*dataframes: pd.DataFrame) -> None:
+def multiple_linegraph(*dataframes):
     plt.figure(figsize=(30, 8))
     for df in dataframes:
         df_transposed = df.transpose()
