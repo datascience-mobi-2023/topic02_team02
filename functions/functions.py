@@ -60,14 +60,16 @@ def df_mean(df: pd.DataFrame) -> pd.DataFrame:
 
     return df_trafo_narmv_mean
 
+
 def multiple_linegraph(*dataframes):
-    plt.figure(figsize=(30, 8))
+
+    plt.figure(figsize=(50, 8))
+
     for df in dataframes:
         df_transposed = df.transpose()
         df_transposed.plot.line()
 
     plt.xlabel('position_mut')
-
     plt.ylabel('DMS_score')
-
+    plt.legend(dataframes)  # Add legend using the DataFrame names
     plt.show()
