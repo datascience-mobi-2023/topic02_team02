@@ -59,3 +59,15 @@ def df_mean(df: pd.DataFrame) -> pd.DataFrame:
     df_trafo_narmv_mean = df_trafo_narmv_mean.reset_index(drop=True)
 
     return df_trafo_narmv_mean
+
+def multiple_linegraph(*dataframes):
+    plt.figure(figsize=(30, 8))
+    for df in dataframes:
+        df_transposed = df.transpose()
+        df_transposed.plot.line()
+
+    plt.xlabel('position_mut')
+
+    plt.ylabel('DMS_score')
+
+    plt.show()
