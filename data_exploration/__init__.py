@@ -8,5 +8,6 @@ __all__ = [
     "generate_codon_variations",
     "prob_as_position",
     "exchange_prob_dict",
-    "select_smut"
+    "select_smut",
+    "dms_distance_matrix"
 ]

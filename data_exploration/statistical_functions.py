@@ -38,3 +38,8 @@ def aa_distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
     frame = pd.DataFrame(aa_distances, index=aa_nat[labels_column], columns=aa_nat[labels_column])
     return frame
 
+def dms_distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
+    """calculates the distances of the AA to each other based on the DMS-Scores when interchanged with another AA"""
+    dms_distances = euclidean_distances(frame.values)
+    frame = pd.DataFrame(dms_distances, index=frame.index, columns=frame.index)
+    return frame
