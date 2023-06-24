@@ -49,7 +49,7 @@ def exchange_prob_dict(frame: pd.DataFrame) -> dict:
     variations through single base mutations, as well as their probability."""
     res: dict = {}
     for position in range(0, frame.shape[0]-1):
-        res[position] = prob_as_position(position, frame)
+        res[position] = prob_as_position(position, frame).drop(frame.Original.loc[position])
 
     return res
 
@@ -79,5 +79,5 @@ if __name__ == '__main__':
     p53_var_frame: pd.DataFrame = translate_codons_df(generate_codon_variations(p53_codons))
     temp = exchange_prob_dict(p53_var_frame)
 
-    print(temp[0])
+    print([temp[i].sum() for i in range(1, 20)])
     pass
