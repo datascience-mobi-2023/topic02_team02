@@ -60,6 +60,20 @@ def df_mean(df: pd.DataFrame) -> pd.DataFrame:
 
     return df_trafo_narmv_mean
 
+def df_mean(df_trafo: pd.DataFrame) -> pd.DataFrame:
+    df_trafo_narmv: pd.DataFrame = dc.rmv_na(df_trafo)
+    df_trafo_narmv_mean = pd.DataFrame(columns=df_trafo_narmv.columns)
+
+    for column in df_trafo_narmv.columns:
+        if column != 'position_mut' and column != 'AS_old':
+            column_mean = df_trafo_narmv[column].mean()
+            df_trafo_narmv_mean.loc[0, column] = column_mean
+
+    df_trafo_narmv_mean = df_trafo_narmv_mean.reset_index(drop=True)
+
+    return df_trafo_narmv_mean
+
+
 
 def multiple_linegraph(*dataframes):
 
