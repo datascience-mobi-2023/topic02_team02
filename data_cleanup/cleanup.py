@@ -1,17 +1,29 @@
 ## all added functions are to be declared in the init file, to ensure effortless usage
 import pandas as pd
 
-def min_max_norm(frame: pd.DataFrame, upper_border: float = 1.0, lower_border: float = -1.0) -> pd.DataFrame:
-    """Der gegebene Datensatz wird normalisiert auf die Grenzen upper und lower, die per default auf 1, -1 stehen"""
-    NormalisierungsDatensatz: pd.DataFrame = frame.copy()
-    val_min: float = NormalisierungsDatensatz.DMS_score.min()
-    val_max: float = NormalisierungsDatensatz.DMS_score.max()
-    counter: int = 1
+import functions
 
-    while counter <= NormalisierungsDatensatz.shape[0] - 1:
-        NormalisierungsDatensatz.iloc[counter, 2] = (NormalisierungsDatensatz.iloc[counter, 2] - val_min)/(val_max - val_min) * (upper_border - lower_border) -1
-        counter += 1
-    return NormalisierungsDatensatz
+
+def isfloat(series: pd.Series):
+    for pos in range(series.shape[0]):
+        try:
+            float(series.iloc[pos])
+            return True
+        except ValueError:
+            return False
+def min_max_norm(norm_df: pd.DataFrame, upper_border: float = 1.0, lower_border: float = -1.0) -> pd.DataFrame:
+    """Der gegebene Datensatz wird normalisiert auf die Grenzen upper und lower, die per default auf 1, -1 stehen"""
+
+    for col in norm_df.columns:
+        if isfloat(norm_df[col]):
+            val_min: float = norm_df[col].min()
+            val_max: float = norm_df[col].max()
+            norm_df[col] = (norm_df[col] - val_min) / (val_max-val_min) * (upper_border - lower_border) -1
+        else:
+            print(f'{col} contains values, which arent floats')
+            continue
+
+    return norm_df
 
 def z_transform(frame: pd.DataFrame) -> pd.DataFrame:
     """Set transformation operation"""
@@ -77,3 +89,8 @@ def high_val(df: pd.DataFrame, num_high: int, ) -> pd.DataFrame:
 
     return None
 
+
+if __name__ == "__main__":
+    df: pd.DataFrame = pd.read_csv('../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv')
+    print(min_max_norm(df))
+    # functions.hmap(aufteilung_mut_pos(min_max_norm(df)))
