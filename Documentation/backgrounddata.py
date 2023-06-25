@@ -64,24 +64,24 @@ gia_null_nut_mean.name = 'gia_null_nut_mean'
 gia_wt_nut_mean.name = 'gia_wt_nut_mean'
 kot_hum_mean.name = 'kot_hum_mean'
 # Erwartet eine Liste an dataframes ("dataframes=[gia_null_eto_mean, gia_null_nut_mean, gia_wt_nut_mean, kot_hum_mean]")
-def plot_multiple_datasets(dataframes):
+#def plot_multiple_datasets(dataframes):
     # figsize kann verändert werden je nach Präferenz
-    plt.figure(figsize=(40, 6))
+    #plt.figure(figsize=(40, 6))
     # for-loop der jeden Eintrag in der Liste "Dataframes" durchgeht
-    for df in dataframes:
+    #for df in dataframes:
         # Werte für x-Achse aus 'position_mut' als int extrahiert
-        x = df.columns.get_level_values('position_mut').astype(int)
+        #x = df.columns.get_level_values('position_mut').astype(int)
         # Werte für y-Achse aus erster Zeile von df als float extrahiert
-        y = df.iloc[0].values.astype(float)
-        label = df.name
-        plt.plot(x, y, label=label, marker='o')
-    plt.xlabel('position')
-    plt.ylabel('DMS_score')
-    plt.title('Mean DMS_scores of different datasets throughout each position of tp53')
+        #y = df.iloc[0].values.astype(float)
+        #label = df.name
+        #plt.plot(x, y, label=label, marker='o')
+    #plt.xlabel('position')
+    #plt.ylabel('DMS_score')
+    #plt.title('Mean DMS_scores of different datasets throughout each position of tp53')
     #WARUM ZUR VERDAMMTEN HÖLLE MACHT ER NUR 102 BIS 292 ICH VERSTEHE ES NICHT BITTE BEENDE ES
-    plt.xticks(x[::10])
-    plt.legend()
-    plt.show()
+    #plt.xticks(x[::10])
+    #plt.legend()
+    #plt.show()
     #plt.plot(x[::10], y[::10], label=label, marker='o')
 
 
