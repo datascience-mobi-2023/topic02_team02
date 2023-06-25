@@ -20,6 +20,11 @@ gia_null_nut_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_nut)
 gia_wt_nut_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_wt_nut)
 kot_hum_auf: pd.DataFrame = dc.aufteilung_mut_pos(kot_hum)
 
+gia_null_eto_df: pd.DataFrame = dc.df_transform(gia_null_eto)
+gia_null_nut_df: pd.DataFrame = dc.df_transform(gia_null_nut)
+gia_wt_nut_df: pd.DataFrame = dc.df_transform(gia_wt_nut)
+kot_hum_df: pd.DataFrame = dc.df_transform(kot_hum)
+
 
 lowest_vals = pd.DataFrame(columns=['Name of the Dataset', 'Location of lowest DMS_score sum', "Sum", "Original AA"])
 
@@ -54,10 +59,10 @@ lowest_vals_gesammelt["Kotler sums"] = KSLV['Sum'].values
 
 
 
-gia_null_eto_mean = fun.df_mean(gia_null_eto)
-gia_null_nut_mean = fun.df_mean(gia_null_nut)
-gia_wt_nut_mean = fun.df_mean(gia_wt_nut)
-kot_hum_mean = fun.df_mean(kot_hum)
+gia_null_eto_mean = fun.df_mean(gia_null_eto_df)
+gia_null_nut_mean = fun.df_mean(gia_null_nut_df)
+gia_wt_nut_mean = fun.df_mean(gia_wt_nut_df)
+kot_hum_mean = fun.df_mean(kot_hum_df)
 
 gia_null_eto_mean.name = 'gia_null_eto_mean'
 gia_null_nut_mean.name = 'gia_null_nut_mean'
