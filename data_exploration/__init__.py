@@ -9,5 +9,7 @@ __all__ = [
     "prob_as_position",
     "exchange_prob_dict",
     "select_smut",
-    "dms_distance_matrix"
+    "dms_distance_matrix",
+    "prob_smut",
+    "clean_variation_matrix"
 ]
