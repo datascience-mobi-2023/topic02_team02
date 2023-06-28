@@ -173,3 +173,9 @@ Use linear regression to evaluate the relation between variables and predicting 
 - Gilt das für das Gesamte Protein oder nur domänenspezifisch?
 ### In case the answer is NO
 - Eine einzelne Substitution hat keinen signifikanten Einfluss auf die Entwicklung eines Karzinoms.
+
+
+### TO-DO wenn alles gecodet ist: 
+- Ein File erstellen, wo alle Packages, die wir benutzen, mit der Version, die wir benutzen, auflisten
+- Dafür: Conda Terminal öffnen und Packages als list anzeigen lassen oder "Conda export environment" Befehl eingeben
+- Packages als .yaml file gelistet
