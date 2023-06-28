@@ -20,7 +20,7 @@ def min_max_norm(norm_df: pd.DataFrame, upper_border: float = 1.0, lower_border:
             val_max: float = norm_df[col].max()
             norm_df[col] = (norm_df[col] - val_min) / (val_max-val_min) * (upper_border - lower_border) -1
         else:
-            print(f'{col} contains values, which arent floats')
+            # print(f'{col} contains values, which arent floats')
             continue
 
     return norm_df
