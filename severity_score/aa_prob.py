@@ -9,18 +9,6 @@ rna_sequence = dna_sequence.replace("T", "U")
 p53_codons = [rna_sequence[i:i+3] for i in range(0, len(rna_sequence), 3)]
 
 
-def translate_codons_df(df: pd.DataFrame) -> pd.DataFrame:
-    translated_df = pd.DataFrame()
-
-    for column in df.columns:
-        codons = df[column]
-        seqs = [Seq(codon) for codon in codons]
-        amino_acids = [seq.translate() for seq in seqs]
-        translated_df[column] = amino_acids
-
-    return translated_df.astype(str)
-
-
 def generate_codon_variations(codons: list) -> pd.DataFrame:
     variations: list = []
     for codon in codons:
@@ -31,9 +19,61 @@ def generate_codon_variations(codons: list) -> pd.DataFrame:
             variation.extend([codon[:i] + base + codon[i+1:] for base in bases])
         variations.append(variation)
 
-    df = pd.DataFrame(variations)
-    df.columns = ['Original'] + [f'Variation {i+1}' for i in range(9)]
-    return df
+    variation_matrix = pd.DataFrame(variations)
+    variation_matrix.columns = ['Original'] + [f'Variation {i+1}' for i in range(9)]
+    return variation_matrix
+
+
+def translate_codons_df(variation_matrix: pd.DataFrame) -> pd.DataFrame:
+    """takes in a variation matrix for a codon sequence and translates all codons into AA"""
+    translated_df = pd.DataFrame()
+
+    for column in df.columns:
+        codons = variation_matrix[column]
+        amino_acids = [translate_codon_to_aa(codon) for codon in codons]
+        translated_df[column] = amino_acids
+
+    return translated_df
+
+
+def translate_codons_to_string(codons: list) -> str:
+    """Takes in a list containing all codons. Can be used to generate AA sequence from DNA sequence found
+    online. Newly generated AA sequence and sequence found in "reference_file_substitutions.csv" can be
+    compared by BLAST to ensure comparability"""
+    amino_acids = []
+
+    for codon in codons:
+        amino_acid = translate_codon_to_aa(codon)
+        amino_acids.append(amino_acid)
+
+    return ''.join(amino_acids)
+
+
+def translate_codon_to_aa(codon: str) -> str:
+    """used to translate single codons into corresponding AA"""
+    codon_table = {
+        'UUU': 'F', 'UUC': 'F', 'UUA': 'L', 'UUG': 'L',
+        'CUU': 'L', 'CUC': 'L', 'CUA': 'L', 'CUG': 'L',
+        'AUU': 'I', 'AUC': 'I', 'AUA': 'I', 'AUG': 'M',
+        'GUU': 'V', 'GUC': 'V', 'GUA': 'V', 'GUG': 'V',
+        'UCU': 'S', 'UCC': 'S', 'UCA': 'S', 'UCG': 'S',
+        'CCU': 'P', 'CCC': 'P', 'CCA': 'P', 'CCG': 'P',
+        'ACU': 'T', 'ACC': 'T', 'ACA': 'T', 'ACG': 'T',
+        'GCU': 'A', 'GCC': 'A', 'GCA': 'A', 'GCG': 'A',
+        'UAU': 'Y', 'UAC': 'Y', 'UAA': '*', 'UAG': '*',
+        'CAU': 'H', 'CAC': 'H', 'CAA': 'Q', 'CAG': 'Q',
+        'AAU': 'N', 'AAC': 'N', 'AAA': 'K', 'AAG': 'K',
+        'GAU': 'D', 'GAC': 'D', 'GAA': 'E', 'GAG': 'E',
+        'UGU': 'C', 'UGC': 'C', 'UGA': '*', 'UGG': 'W',
+        'CGU': 'R', 'CGC': 'R', 'CGA': 'R', 'CGG': 'R',
+        'AGU': 'S', 'AGC': 'S', 'AGA': 'R', 'AGG': 'R',
+        'GGU': 'G', 'GGC': 'G', 'GGA': 'G', 'GGG': 'G'
+    }
+
+    if codon in codon_table:
+        return codon_table[codon]
+    else:
+        return 'Unknown'
 
 
 def prob_as_position(position: int, variation_matrix: pd.DataFrame) -> pd.Series:
@@ -49,7 +89,6 @@ def clean_variation_matrix(variation_matrix: pd.DataFrame) -> pd.DataFrame:
     variation_matrix_cleaned = variation_matrix.replace("*", np.nan)
 
     return variation_matrix_cleaned
-
 
 
 def select_smut(DMS_scores: pd.DataFrame, variation_matrix: pd.DataFrame) -> pd.DataFrame:
@@ -79,7 +118,6 @@ def prob_smut(df_smut: pd.DataFrame, variation_matrix: pd.DataFrame) -> pd.DataF
         all_probs = pd.concat([all_probs, probs], axis=1)
 
     return all_probs.T
-
 
 
 if __name__ == '__main__':

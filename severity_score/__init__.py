@@ -5,5 +5,8 @@ __all__ = [
     "prob_as_position",
     "select_smut",
     "prob_smut",
-    "clean_variation_matrix"
+    "clean_variation_matrix",
+    "translate_codons_df",
+    "translate_codons_to_string",
+    "translate_codon_to_aa"
 ]
