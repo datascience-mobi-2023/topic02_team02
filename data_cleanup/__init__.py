@@ -5,5 +5,6 @@ __all__ = [
     'z_transform',
     'aufteilung_mut_pos',
     'df_transform',
-    'rmv_na'
+    'rmv_na',
+    'min_max_val'
 ]
