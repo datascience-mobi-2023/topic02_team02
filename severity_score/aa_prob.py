@@ -28,7 +28,7 @@ def translate_codons_df(variation_matrix: pd.DataFrame) -> pd.DataFrame:
     """takes in a variation matrix for a codon sequence and translates all codons into AA"""
     translated_df = pd.DataFrame()
 
-    for column in df.columns:
+    for column in variation_matrix.columns:
         codons = variation_matrix[column]
         amino_acids = [translate_codon_to_aa(codon) for codon in codons]
         translated_df[column] = amino_acids
