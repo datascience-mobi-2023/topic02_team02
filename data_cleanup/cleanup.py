@@ -104,6 +104,19 @@ def high_val(df: pd.DataFrame, num_high: int, ) -> pd.DataFrame:
 
     return None
 
+import pandas as pd
+
+def low_val(df: pd.DataFrame, num_low: int) -> pd.DataFrame:
+    """Zeigt die x niedrigsten Werte eines Datensatzes an"""
+    gia_null_eto_dft = df_transform(df)
+    gia_null_eto_dft_narm = rmv_na(gia_null_eto_dft)
+    sum_df = pd.DataFrame(gia_null_eto_dft_narm.sum(), columns=['Sum'])
+    lowest_values = sum_df.nsmallest(num_low, "Sum")
+    # print(f"\nLowest {num_low} values in Sum:")
+    print(lowest_values)
+
+    return None
+
 
 if __name__ == "__main__":
     df: pd.DataFrame = pd.read_csv('../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv')
