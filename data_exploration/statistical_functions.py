@@ -1,6 +1,9 @@
 import pandas as pd
 from sklearn.metrics.pairwise import euclidean_distances
 import scipy.stats as stats
+import data_cleanup as dc
+import data_exploration as de
+
 
 def mean_substitutions(frame: pd.DataFrame) -> pd.DataFrame:
     """aus einem Datensatz, den wir gegeben haben, direkt eine Distanzmatrix zu erstellen. Zeilen in dem ausgegebenen
@@ -15,6 +18,7 @@ def mean_substitutions(frame: pd.DataFrame) -> pd.DataFrame:
     mean_scores_df = mean_scores_df.pivot(index="AS_old", columns="AS_new", values="DMS_score")
     return mean_scores_df
 
+
 def mean_substitutions_inverted(frame: pd.DataFrame) -> pd.DataFrame:
     """aus einem Datensatz, den wir gegeben haben, direkt eine Distanzmatrix zu erstellen. Zeilen in dem ausgegebenen
     DataFrame sind die neuen AS, Spalten die alten"""
@@ -28,6 +32,7 @@ def mean_substitutions_inverted(frame: pd.DataFrame) -> pd.DataFrame:
     mean_scores_dfi = mean_scores_dfi.pivot(index="AS_new", columns="AS_old", values="DMS_score")
     return mean_scores_dfi
 
+
 def aa_distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
     """  """
     aa_nat = frame.drop(index=[12, 18])
@@ -38,8 +43,10 @@ def aa_distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
     frame = pd.DataFrame(aa_distances, index=aa_nat[labels_column], columns=aa_nat[labels_column])
     return frame
 
+
 def dms_distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
     """calculates the distances of the AA to each other based on the DMS-Scores when interchanged with another AA"""
-    dms_distances = euclidean_distances(frame.values)
-    frame = pd.DataFrame(dms_distances, index=frame.index, columns=frame.index)
-    return frame
+    frame_prep = dc.rmv_na(de.mean_substitutions(frame))
+    dms_distances = euclidean_distances(frame_prep.values)
+    frame_prep = pd.DataFrame(dms_distances, index=frame_prep.index, columns=frame_prep.index)
+    return frame_prep

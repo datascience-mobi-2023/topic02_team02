@@ -60,16 +60,6 @@ def df_transform(frame: pd.DataFrame) -> pd.DataFrame:
     return pivoted_frame
 
 
-def df_transform_inverse(frame: pd.DataFrame) -> pd.DataFrame:
-    """df wird umgewandelt, sodass WT-Sequenz die Reihen sind und in den Spalten die Mutationen mit anderen AS vermerkt
-    sind"""
-    frame['position_mut'] = frame.mutant.str.slice(start=1, stop=-1).astype(int)
-    frame['AS_old'] = frame.mutant.str.get(0)
-    frame['AS_new'] = frame.mutant.str.get(-1)
-    pivoted_frame = frame.pivot(index=['position_mut', 'AS_old'], columns='AS_new', values='DMS_score')
-    return pivoted_frame
-
-
 def rmv_na(frame: pd.DataFrame) -> pd.DataFrame:
     """Ändert die Werte eines df von NaN zu 0, wenn mutierte AS der WT AS entspricht"""
     for col in frame.columns:
