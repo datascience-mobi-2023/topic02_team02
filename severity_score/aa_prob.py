@@ -8,7 +8,6 @@ dna_sequence: str = 'ATGGAGGAGCCGCAGTCAGATCCTAGCGTCGAGCCCCCTCTGAGTCAGGAAACATTTTC
 rna_sequence = dna_sequence.replace("T", "U")
 p53_codons = [rna_sequence[i:i+3] for i in range(0, len(rna_sequence), 3)]
 
-
 def translate_codons_df(df: pd.DataFrame) -> pd.DataFrame:
     translated_df = pd.DataFrame()
 
@@ -19,7 +18,6 @@ def translate_codons_df(df: pd.DataFrame) -> pd.DataFrame:
         translated_df[column] = amino_acids
 
     return translated_df.astype(str)
-
 
 def generate_codon_variations(codons: list) -> pd.DataFrame:
     variations: list = []
