@@ -134,7 +134,7 @@ gia_wt_nut_z_mmn_df_mean.name = 'gia_wt_nut_z_mmn_df_mean'
 gia_null_eto_z_mmn_df_mean.name = 'gia_null_eto_z_mmn_df_mean'
 
 def liniengraph(dataframes):
-    plt.figure(figsize=(25, 5))
+    plt.figure(figsize=(35, 7))
     for df in dataframes:
         x = df.columns.get_level_values('position_mut').astype(int)
         y = df.iloc[0].values.astype(float)
