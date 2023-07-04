@@ -1,7 +1,7 @@
 ## all added functions are to be declared in the init file, to ensure effortless usage
 import pandas as pd
-
-import functions
+import data_cleanup as dc
+import scipy.stats as stats
 
 
 def isfloat(series: pd.Series):
@@ -105,7 +105,6 @@ def high_val(df: pd.DataFrame, num_high: int, ) -> pd.DataFrame:
 
     return None
 
-import pandas as pd
 
 def low_val(df: pd.DataFrame, num_low: int) -> pd.DataFrame:
     """Zeigt die x niedrigsten Werte eines Datensatzes an"""
@@ -117,6 +116,16 @@ def low_val(df: pd.DataFrame, num_low: int) -> pd.DataFrame:
     print(lowest_values)
 
     return None
+
+
+def clean_aa(frame: pd.DataFrame) -> pd.DataFrame:
+    """calculate the cleaned Dataset for the chemical properties of AAs"""
+    aa_nat = frame.drop(index=[12, 18])
+    labels_column = 'Letter'
+    aa_rmv = aa_nat.drop(['Name', 'Abbr', 'Letter', 'Molecular Formula', 'Molecular Weight', 'Residue Formula', 'pKx3'], axis=1)
+    aa_zscore = dc.min_max_norm(aa_rmv.apply(stats.zscore))
+    frame = pd.DataFrame(aa_zscore.values, index=aa_nat[labels_column], columns=aa_rmv.columns)
+    return frame
 
 
 if __name__ == "__main__":
