@@ -1,7 +1,7 @@
 ## all added functions are to be declared in the init file, to ensure effortless usage
 import pandas as pd
-
-import functions
+import data_cleanup as dc
+import scipy.stats as stats
 
 
 def isfloat(series: pd.Series):
@@ -30,9 +30,13 @@ def min_max_norm(norm_df: pd.DataFrame, upper_border: float = 1.0, lower_border:
 
 def z_transform(frame: pd.DataFrame) -> pd.DataFrame:
     """Set transformation operation"""
-    mean_val: float = frame.DMS_score.mean()
-    var_val: float = frame.DMS_score.std()
-    frame.DMS_score = (frame.DMS_score - mean_val) / var_val
+    for col in frame:
+        if isfloat(frame[col]):
+            mean_val: float = frame[col].mean()
+            var_val: float = frame[col].std()
+            frame[col] = (frame[col] - mean_val) / var_val
+        else:
+            continue
     return frame
 
 
@@ -58,6 +62,13 @@ def df_transform(frame: pd.DataFrame) -> pd.DataFrame:
     frame['AS_new'] = frame.mutant.str.get(-1)
     pivoted_frame = frame.pivot(index='AS_new', columns=['position_mut', 'AS_old'], values='DMS_score')
     return pivoted_frame
+
+
+def df_split(frame: pd.DataFrame) -> pd.DataFrame:
+    frame['position_mut'] = frame.mutant.str.slice(start=1, stop=-1).astype(int)-1
+    frame['aa_new'] = frame.mutant.str.get(-1)
+    res = frame.pivot(index='position_mut', values='DMS_score', columns='aa_new')
+    return res
 
 
 def rmv_na(frame: pd.DataFrame) -> pd.DataFrame:
@@ -94,7 +105,6 @@ def high_val(df: pd.DataFrame, num_high: int, ) -> pd.DataFrame:
 
     return highest_values
 
-import pandas as pd
 
 def low_val(df: pd.DataFrame, num_low: int) -> pd.DataFrame:
     """Zeigt die x niedrigsten Werte eines Datensatzes an"""
@@ -106,6 +116,16 @@ def low_val(df: pd.DataFrame, num_low: int) -> pd.DataFrame:
     # print(lowest_values)
 
     return lowest_values
+
+
+def clean_aa(frame: pd.DataFrame) -> pd.DataFrame:
+    """calculate the cleaned Dataset for the chemical properties of AAs"""
+    aa_nat = frame.drop(index=[12, 18])
+    labels_column = 'Letter'
+    aa_rmv = aa_nat.drop(['Name', 'Abbr', 'Letter', 'Molecular Formula', 'Molecular Weight', 'Residue Formula', 'pKx3'], axis=1)
+    aa_zscore = dc.min_max_norm(aa_rmv.apply(stats.zscore))
+    frame = pd.DataFrame(aa_zscore.values, index=aa_nat[labels_column], columns=aa_rmv.columns)
+    return frame
 
 
 if __name__ == "__main__":
