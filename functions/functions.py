@@ -86,3 +86,42 @@ def multiple_linegraph(*dataframes):
     plt.ylabel('DMS_score')
     plt.legend(dataframes)
     plt.show()
+
+def calculate_average_dms_score_new(*args):
+    results = {}
+
+    for arg in args:
+        df_name = arg[0]
+        df = arg[1]
+        grouped = df.groupby('AS_new')
+        sums = grouped['DMS_score'].sum()
+        counts = grouped['DMS_score'].count()
+        averages = sums / counts
+        results[df_name] = averages
+
+    result_df = pd.DataFrame(results)
+    return result_df
+
+def calculate_average_dms_score_old(*args):
+    results = {}
+
+    for arg in args:
+        df_name = arg[0]
+        df = arg[1]
+        grouped = df.groupby('AS_old')
+        sums = grouped['DMS_score'].sum()
+        counts = grouped['DMS_score'].count()
+        averages = sums / counts
+        results[df_name] = averages
+
+    result_df = pd.DataFrame(results)
+    return result_df
+
+def hmap_mean_variance (df = pd.DataFrame) -> None:
+    plt.figure(figsize=(50, 10))
+    sns.heatmap(df, cmap='coolwarm', annot=True, fmt=".2f", linewidths=0.5)
+    plt.title('Heatmap of AS_new vs AS_old')
+    plt.xlabel('AS_new')
+    plt.ylabel('AS_old')
+    plt.show()
+    return None

@@ -37,16 +37,14 @@ lowest_vals_gesammelt = pd.DataFrame(columns=['Giacomelli NULL Etoposide locatio
 
 anzahl: int = 10
 lowest_vals_gesammelt = pd.DataFrame()
+#####
 
-#lowest_vals_gesammelt["Giacomelli NULL Etoposide location"] = rs.GNELLV.index.get_level_values(0).values
-#lowest_vals_gesammelt["Giacomelli NULL Etoposide sums"] = rs.GNELLV['Sum'].values
-#lowest_vals_gesammelt["Giacomelli NULL Nutlin location"] = rs.GNNLLV.index.get_level_values(0).values
-#lowest_vals_gesammelt["Giacomelli NULL Nutlin sums"] = rs.GNNLLV['Sum'].values
-#lowest_vals_gesammelt["Giacomelli WT Nutlin location"] = rs.GWNLLV.index.get_level_values(0).values
-#lowest_vals_gesammelt["Giacomelli WT Nutlin sums"] = rs.GWNLLV['Sum'].values
-#lowest_vals_gesammelt["Kotler location"] = rs.KLLV.index.get_level_values(0).values
-#lowest_vals_gesammelt["Kotler sums"] = rs.KSLV['Sum'].values
+GNELV= dc.low_val(gia_null_eto, 5)
+GNEHV= dc.high_val(gia_null_eto, 5)
 
+
+
+####
 gia_null_eto_mean = fun.df_mean(gia_null_eto_df)
 gia_null_nut_mean = fun.df_mean(gia_null_nut_df)
 gia_wt_nut_mean = fun.df_mean(gia_wt_nut_df)
@@ -146,3 +144,55 @@ def liniengraph(dataframes):
     plt.xticks(np.arange(0, 393+1, 10))
     plt.legend()
     plt.show()
+
+#
+gia_null_eto_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto)
+gia_null_nut_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto)
+gia_wt_nut_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_wt_nut)
+kot_hum_amp: pd.DataFrame = dc.aufteilung_mut_pos(kot_hum)
+
+# mean distance
+#%% md
+## GIA NULL ETO
+#%%
+fpathGNE = '../DMS_data/P53_HUMAN_Giacomelli_NULL_Etoposide_2018.csv'
+dfGNE = pd.read_csv(fpathGNE)
+mutations_dfGNE = dc.aufteilung_mut_pos(dfGNE)
+subs_df = mutations_dfGNE.groupby(["AS_old", "AS_new"])
+mean_scoresGNE = subs_df.DMS_score.mean()
+mean_scores_dfGNE = mean_scoresGNE.reset_index()
+mean_substitutionsGNE = mean_scores_dfGNE.pivot(index="AS_old", columns="AS_new", values="DMS_score")
+dc.rmv_na(mean_substitutionsGNE)
+#%% md
+## GIA NULL NUT
+#%%
+fpathGNN = '../DMS_data/P53_HUMAN_Giacomelli_NULL_Nutlin_2018.csv'
+dfGNN = pd.read_csv(fpathGNN)
+mutations_dfGNN = dc.aufteilung_mut_pos(dfGNN)
+subs_df = mutations_dfGNN.groupby(["AS_old", "AS_new"])
+mean_scoresGNN = subs_df.DMS_score.mean()
+mean_scores_dfGNN = mean_scoresGNN.reset_index()
+mean_substitutionsGNN = mean_scores_dfGNN.pivot(index="AS_old", columns="AS_new", values="DMS_score")
+dc.rmv_na(mean_substitutionsGNN)
+#%% md
+## GIA WT NUT
+#%%
+fpathGWN = '../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv'
+dfGWN = pd.read_csv(fpathGWN)
+mutations_dfGWN = dc.aufteilung_mut_pos(dfGWN)
+subs_df = mutations_dfGWN.groupby(["AS_old", "AS_new"])
+mean_scoresGWN = subs_df.DMS_score.mean()
+mean_scores_dfGWN = mean_scoresGWN.reset_index()
+mean_substitutionsGWN = mean_scores_dfGWN.pivot(index="AS_old", columns="AS_new", values="DMS_score")
+dc.rmv_na(mean_substitutionsGWN)
+#%% md
+## KOT HUM
+#%%
+fpathKH = '../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv'
+dfKH = pd.read_csv(fpathKH)
+mutations_dfKH = dc.aufteilung_mut_pos(dfKH)
+subs_df = mutations_dfKH.groupby(["AS_old", "AS_new"])
+mean_scoresKH = subs_df.DMS_score.mean()
+mean_scores_dfKH = mean_scoresKH.reset_index()
+mean_substitutionsKH = mean_scores_dfKH.pivot(index="AS_old", columns="AS_new", values="DMS_score")
+dc.rmv_na(mean_substitutionsKH)
