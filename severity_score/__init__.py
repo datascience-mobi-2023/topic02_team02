@@ -9,5 +9,6 @@ __all__ = [
     "translate_codons_df",
     "translate_codons_to_string",
     "translate_codon_to_aa",
-    "dms_smut"
+    "dms_smut",
+    'exchange_prob_dict'
 ]
