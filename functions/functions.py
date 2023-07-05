@@ -27,24 +27,23 @@ def hmap(frame: pd.DataFrame) -> None:
     return None
 
 
-def multiple_hmap(*frames: pd.DataFrame) -> None:
-    hmap_frames = []
-    for frame in frames:
-        hmap_frame = frame.pivot(index='AS_new', columns=['position_mut', 'AS_old'], values='DMS_score')
-        hmap_frames.append(hmap_frame)
-
-    plt.figure(figsize=(50, 8 * len(frames)))
+def mult_hmap(Daten1: pd.DataFrame, Daten2: pd.DataFrame, Daten3: pd.DataFrame) -> None:
+    fig, axes = plt.subplots(3, 1, figsize=(40, 29), sharex=True)
     sns.set(font_scale=2)
-
-    for i, hmap_frame in enumerate(hmap_frames):
-        plt.subplot(len(frames), 1, i + 1)
-        sns.heatmap(hmap_frame, cmap='seismic')
-        plt.title(f'DMS Scores for Mutations - Dataset {i + 1}')
-
+    frames = [Daten1, Daten2, Daten3]
+    for frame in frames:
+        frame = dc.aufteilung_mut_pos(frame)
+    names = ["Gia_null_eto", "Gia_wt_nut", "Gia_null_nut"]
+    for i, ax in enumerate(axes):
+        hmap_frame: pd.DataFrame = frames[i].pivot(index='AS_new', columns=['position_mut', 'AS_old'], values='DMS_score')
+        sns.heatmap(hmap_frame, cmap='seismic', ax=ax)
+        ax.set_title('')
+        if i < 2:
+            ax.set(xlabel='')
+        ax.text(0.05, 0.95, names[i], transform=ax.transAxes, fontsize=24,
+                verticalalignment='center', bbox=dict(facecolor='white', alpha=0.5))
     plt.tight_layout()
     plt.show()
-    return None
-
 
 def df_mean(df: pd.DataFrame) -> pd.DataFrame:
     df_trafo: pd.DataFrame = dc.df_transform(df)
