@@ -10,5 +10,6 @@ __all__ = [
     "translate_codons_to_string",
     "translate_codon_to_aa",
     "dms_smut",
-    'exchange_prob_dict'
+    'exchange_prob_dict',
+    'process_dna_seq'
 ]
