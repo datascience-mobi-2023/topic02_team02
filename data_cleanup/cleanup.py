@@ -101,9 +101,9 @@ def high_val(df: pd.DataFrame, num_high: int, ) -> pd.DataFrame:
     sum_df = pd.DataFrame(gia_null_eto_dft_narm.sum(), columns=['Sum'])
     highest_values = sum_df.nlargest(num_high, "Sum")
     # print(f"\nHighest {num_high} values in Sum :")
-    print(highest_values)
+    #print(highest_values)
 
-    return None
+    return highest_values
 
 
 def low_val(df: pd.DataFrame, num_low: int) -> pd.DataFrame:
@@ -113,9 +113,9 @@ def low_val(df: pd.DataFrame, num_low: int) -> pd.DataFrame:
     sum_df = pd.DataFrame(gia_null_eto_dft_narm.sum(), columns=['Sum'])
     lowest_values = sum_df.nsmallest(num_low, "Sum")
     # print(f"\nLowest {num_low} values in Sum:")
-    print(lowest_values)
+    # print(lowest_values)
 
-    return None
+    return lowest_values
 
 
 def clean_aa(frame: pd.DataFrame) -> pd.DataFrame:
