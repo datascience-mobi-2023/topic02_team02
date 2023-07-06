@@ -15,6 +15,11 @@ gia_null_nut: pd.DataFrame = pd.read_csv('../DMS_data/P53_HUMAN_Giacomelli_NULL_
 gia_wt_nut: pd.DataFrame = pd.read_csv('../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv')
 kot_hum: pd.DataFrame = pd.read_csv('../DMS_data/P53_HUMAN_Kotler_2018.csv')
 
+gia_null_eto_norm: pd.DataFrame = dc.norm(gia_null_eto)
+gia_null_nut_norm: pd.DataFrame = dc.norm(gia_null_nut)
+gia_wt_nut_norm: pd.DataFrame = dc.norm(gia_wt_nut)
+kot_hum_norm: pd.DataFrame = dc.norm(kot_hum)
+
 gia_null_eto_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto)
 gia_null_nut_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_nut)
 gia_wt_nut_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_wt_nut)
@@ -25,22 +30,24 @@ gia_null_nut_df: pd.DataFrame = dc.df_transform(gia_null_nut)
 gia_wt_nut_df: pd.DataFrame = dc.df_transform(gia_wt_nut)
 kot_hum_df: pd.DataFrame = dc.df_transform(kot_hum)
 
+kot_hum_auf_norm: pd.DataFrame = dc.norm(kot_hum_auf)
 
 lowest_vals = pd.DataFrame(columns=['Name of the Dataset', 'Location of lowest DMS_score sum', "Sum", "Original AA"])
 
 lowest_vals['Name of the Dataset'] = ["Giacomelli Null Etoposide", "Giacomelli NULL Nutlin", "Giacomelli WT Nutlin", "Kotler"]
 lowest_vals['Location of lowest DMS_score sum'] = [280, 205, 245, 245]
-lowest_vals['Sum'] = [-33.450339, -27.798457, -41.124490, -4.352254]
+lowest_vals['Sum'] = [-6.190289, -13.762829, -15.419176, -6.568038]
 lowest_vals['Original AA'] = ['R', 'Y', 'G', "G"]
 
 lowest_vals_gesammelt = pd.DataFrame(columns=['Giacomelli NULL Etoposide location','Giacomelli NULL Etoposide sums', 'Giacomelli NULL Nutlin location', 'Giacomelli NULL Nutlin sums', "Giacomelli WT Nutlin location", "Giacomelli WT Nutlin sums",  "Kotler location", "Kotler sums"])
 
 anzahl: int = 10
 lowest_vals_gesammelt = pd.DataFrame()
+
 #####
 
-GNELV= dc.low_val(gia_null_eto, 5)
-GNEHV= dc.high_val(gia_null_eto, 5)
+GNELV= dc.low_val(gia_null_eto_norm, 5)
+GNEHV= dc.high_val(gia_null_eto_norm, 5)
 
 
 
@@ -147,9 +154,14 @@ def liniengraph(dataframes):
 
 #
 gia_null_eto_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto)
-gia_null_nut_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto)
+gia_null_nut_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_nut)
 gia_wt_nut_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_wt_nut)
 kot_hum_amp: pd.DataFrame = dc.aufteilung_mut_pos(kot_hum)
+
+gia_null_eto_amp_norm: pd.DataFrame = dc.norm(gia_null_eto_amp)
+gia_null_nut_amp_norm: pd.DataFrame = dc.norm(gia_null_nut_amp)
+gia_wt_nut_amp_norm: pd.DataFrame = dc.norm(gia_wt_nut_amp)
+kot_hum_amp_norm: pd.DataFrame = dc.norm(kot_hum_amp)
 
 # mean distance
 #%% md
@@ -158,7 +170,8 @@ kot_hum_amp: pd.DataFrame = dc.aufteilung_mut_pos(kot_hum)
 fpathGNE = '../DMS_data/P53_HUMAN_Giacomelli_NULL_Etoposide_2018.csv'
 dfGNE = pd.read_csv(fpathGNE)
 mutations_dfGNE = dc.aufteilung_mut_pos(dfGNE)
-subs_df = mutations_dfGNE.groupby(["AS_old", "AS_new"])
+mutations_dfGNE_norm: pd.DataFrame = dc.norm(mutations_dfGNE)
+subs_df = mutations_dfGNE_norm.groupby(["AS_old", "AS_new"])
 mean_scoresGNE = subs_df.DMS_score.mean()
 mean_scores_dfGNE = mean_scoresGNE.reset_index()
 mean_substitutionsGNE = mean_scores_dfGNE.pivot(index="AS_old", columns="AS_new", values="DMS_score")
@@ -169,7 +182,8 @@ dc.rmv_na(mean_substitutionsGNE)
 fpathGNN = '../DMS_data/P53_HUMAN_Giacomelli_NULL_Nutlin_2018.csv'
 dfGNN = pd.read_csv(fpathGNN)
 mutations_dfGNN = dc.aufteilung_mut_pos(dfGNN)
-subs_df = mutations_dfGNN.groupby(["AS_old", "AS_new"])
+mutations_dfGNN_norm: pd.DataFrame = dc.norm(mutations_dfGNN)
+subs_df = mutations_dfGNN_norm.groupby(["AS_old", "AS_new"])
 mean_scoresGNN = subs_df.DMS_score.mean()
 mean_scores_dfGNN = mean_scoresGNN.reset_index()
 mean_substitutionsGNN = mean_scores_dfGNN.pivot(index="AS_old", columns="AS_new", values="DMS_score")
@@ -180,7 +194,8 @@ dc.rmv_na(mean_substitutionsGNN)
 fpathGWN = '../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv'
 dfGWN = pd.read_csv(fpathGWN)
 mutations_dfGWN = dc.aufteilung_mut_pos(dfGWN)
-subs_df = mutations_dfGWN.groupby(["AS_old", "AS_new"])
+mutations_dfGWN_norm: pd.DataFrame = dc.norm(mutations_dfGWN)
+subs_df = mutations_dfGWN_norm.groupby(["AS_old", "AS_new"])
 mean_scoresGWN = subs_df.DMS_score.mean()
 mean_scores_dfGWN = mean_scoresGWN.reset_index()
 mean_substitutionsGWN = mean_scores_dfGWN.pivot(index="AS_old", columns="AS_new", values="DMS_score")
@@ -191,7 +206,8 @@ dc.rmv_na(mean_substitutionsGWN)
 fpathKH = '../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv'
 dfKH = pd.read_csv(fpathKH)
 mutations_dfKH = dc.aufteilung_mut_pos(dfKH)
-subs_df = mutations_dfKH.groupby(["AS_old", "AS_new"])
+mutations_dfKH_norm: pd.DataFrame = dc.norm(mutations_dfKH)
+subs_df = mutations_dfKH_norm.groupby(["AS_old", "AS_new"])
 mean_scoresKH = subs_df.DMS_score.mean()
 mean_scores_dfKH = mean_scoresKH.reset_index()
 mean_substitutionsKH = mean_scores_dfKH.pivot(index="AS_old", columns="AS_new", values="DMS_score")
