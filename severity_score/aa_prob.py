@@ -3,12 +3,20 @@ import numpy as np
 import data_cleanup as dc
 from Bio.Seq import Seq
 import severity_score as ses
+import random
+import itertools
 
 dna_sequence: str = 'ATGGAGGAGCCGCAGTCAGATCCTAGCGTCGAGCCCCCTCTGAGTCAGGAAACATTTTCAGACCTATGGAAACTACTTCCTGAAAACAACGTTCTGTCCCCCTTGCCGTCCCAAGCAATGGATGATTTGATGCTGTCCCCGGACGATATTGAACAATGGTTCACTGAAGACCCAGGTCCAGATGAAGCTCCCAGAATGCCAGAGGCTGCTCCCCCCGTGGCCCCTGCACCAGCAGCTCCTACACCGGCGGCCCCTGCACCAGCCCCCTCCTGGCCCCTGTCATCTTCTGTCCCTTCCCAGAAAACCTACCAGGGCAGCTACGGTTTCCGTCTGGGCTTCTTGCATTCTGGGACAGCCAAGTCTGTGACTTGCACGTACTCCCCTGCCCTCAACAAGATGTTTTGCCAACTGGCCAAGACCTGCCCTGTGCAGCTGTGGGTTGATTCCACACCCCCGCCCGGCACCCGCGTCCGCGCCATGGCCATCTACAAGCAGTCACAGCACATGACGGAGGTTGTGAGGCGCTGCCCCCACCATGAGCGCTGCTCAGATAGCGATGGTCTGGCCCCTCCTCAGCATCTTATCCGAGTGGAAGGAAATTTGCGTGTGGAGTATTTGGATGACAGAAACACTTTTCGACATAGTGTGGTGGTGCCCTATGAGCCGCCTGAGGTTGGCTCTGACTGTACCACCATCCACTACAACTACATGTGTAACAGTTCCTGCATGGGCGGCATGAACCGGAGGCCCATCCTCACCATCATCACACTGGAAGACTCCAGTGGTAATCTACTGGGACGGAACAGCTTTGAGGTGCGTGTTTGTGCCTGTCCTGGGAGAGACCGGCGCACAGAGGAAGAGAATCTCCGCAAGAAAGGGGAGCCTCACCACGAGCTGCCCCCAGGGAGCACTAAGCGAGCACTGCCCAACAACACCAGCTCCTCTCCCCAGCCAAAGAAGAAACCACTGGATGGAGAATATTTCACCCTTCAGATCCGTGGGCGTGAGCGCTTCGAGATGTTCCGAGAGCTGAATGAGGCCTTGGAACTCAAGGATGCCCAGGCTGGGAAGGAGCCAGGGGGGAGCAGGGCTCACTCCAGCCACCTGAAGTCCAAAAAGGGTCAGTCTACCTCCCGCCATAAAAAACTCATGTTCAAGACAGAAGGGCCTGACTCAGAC'
 rna_sequence = dna_sequence.replace("T", "U")
 p53_codons_kotler = [rna_sequence[i:i + 3] for i in range(0, len(rna_sequence), 3)]
 p53_codons_gia = p53_codons_kotler
 p53_codons_gia[71] = "CGC"
+
+
+def process_dna_seq(seq: str) -> list:
+    rna_seq = seq.replace("T", "U")
+    res: list = [rna_seq[i:i+3] for i in range(len(seq), 3)]
+    return res
 
 
 def generate_codon_variations(codons: list) -> pd.DataFrame:
@@ -78,18 +86,36 @@ def translate_codon_to_aa(codon: str) -> str:
         return 'Unknown'
 
 
-def prob_aa_position(position: int, variation_matrix: pd.DataFrame) -> pd.Series:
+def prob_aa_position(position: int, variation_matrix: pd.DataFrame, include_original:  bool = False) -> pd.Series:
     """Function returning the probability for each AMS, resulting from a single mutation in the codon as pd.Series"""
 
     res: pd.Series = variation_matrix.loc[position].value_counts(normalize=True)
+    if include_original:
+        return res
+    else:
+        return res.drop(variation_matrix.Original.iloc[position])
 
-    return res.drop(variation_matrix.Original.iloc[position])
+
+def select_smut_position(position: int, variation_matrix: pd.DataFrame, include_original: bool = False) -> pd.Series:
+    """Return all aa, resulting from a single mutation. Probability is set to 1 in a Series"""
+
+    res: pd.Series = variation_matrix.loc[position].value_counts(normalize=True)
+    res.iloc[:] = 1
+    if include_original:
+        return res
+    else:
+        return res.drop(variation_matrix.Original.iloc[position])
 
 
-def exchange_prob_dict(var_frame: pd.DataFrame) -> dict:
+def exchange_prob_dict(var_frame: pd.DataFrame, bias_dms: bool = True, include_original: bool = False) -> dict:
+
     res: dict = {}
-    for position in range(var_frame.shape[0]):
-        res[position] = prob_aa_position(position, var_frame)
+    if bias_dms:
+        for position in range(var_frame.shape[0]):
+            res[position] = prob_aa_position(position, var_frame, include_original)
+    else:
+        for position in range(var_frame.shape[0]):
+            res[position] = select_smut_position(position, var_frame, include_original)
 
     return res
 
@@ -101,10 +127,10 @@ def clean_variation_matrix(variation_matrix: pd.DataFrame, add_val=np.nan) -> pd
     return variation_matrix_cleaned
 
 
-def prob_smut(var_mat: pd.DataFrame, dms_scores: pd.DataFrame) -> pd.DataFrame:
+def prob_smut(var_mat: pd.DataFrame, dms_scores: pd.DataFrame, bias_dms: bool = True, include_original: bool = False) -> pd.DataFrame:
     """Returns df with probabilities for single mutations"""
     res = pd.DataFrame(columns=dms_scores.columns, index=dms_scores.index, data=np.zeros(dms_scores.shape))
-    prob_dict: dict = exchange_prob_dict(var_mat)
+    prob_dict: dict = exchange_prob_dict(var_mat, bias_dms, include_original)
 
     for position in prob_dict.keys():
         res.loc[position] = res.loc[position].add(prob_dict[position])
@@ -112,17 +138,22 @@ def prob_smut(var_mat: pd.DataFrame, dms_scores: pd.DataFrame) -> pd.DataFrame:
     return res
 
 
-def dms_smut(codon_seq: list, dms_data: pd.DataFrame) -> pd.DataFrame:
-    """Returns df with probability adjusted dms_scores"""
+def dms_smut(codon_seq: list, dms_data: pd.DataFrame, bias_dms: bool = True, include_original: bool = False) -> pd.DataFrame:
+    """Returns df with probability adjusted dms_scores
+        :codon_seq - Sequence of Protein (DNA - Sequence)
+        :dms_data - DataFrame from DMS Experiment
+    """
 
     codon_var_raw: pd.DataFrame = translate_codons_df(generate_codon_variations(codon_seq))
     codon_var: pd.DataFrame = clean_variation_matrix(codon_var_raw)
+    # all original AA's are assigned the dms score 0
+    dms_scores = dc.norm(dc.df_split(dms_data).replace(np.nan, 0))
+    prob_single_mut: pd.DataFrame = prob_smut(codon_var, dms_scores, bias_dms, include_original)
 
-    dms_scores = dc.norm(dc.df_split(dms_data))
-    prob_single_mut: pd.DataFrame = prob_smut(codon_var, dms_scores)
-
-    res = dms_scores * prob_single_mut
-    return res
+    if bias_dms:
+        return dc.norm(dms_scores * prob_single_mut)
+    else:
+        return dms_scores * prob_single_mut
 
 
 def select_smut(DMS_scores: pd.DataFrame, variation_matrix: pd.DataFrame) -> pd.DataFrame:
@@ -153,6 +184,21 @@ def select_smut(DMS_scores: pd.DataFrame, variation_matrix: pd.DataFrame) -> pd.
 #
 #     return all_probs.T
 #
+
+
+def generate_codon_variations_rdm(codons: list) -> pd.DataFrame:
+    variations = []
+    all_codons = [''.join(codon) for codon in itertools.product('ACGT', repeat=3)]
+    for codon in codons:
+        variation = [codon]
+        random_codons = random.sample(all_codons, 9)
+        variation.extend(random_codons)
+        variations.append(variation)
+
+    variation_matrix = pd.DataFrame(variations)
+    variation_matrix.columns = ['Original'] + [f'Variation {i + 1}' for i in range(9)]
+    return variation_matrix
+
 
 
 

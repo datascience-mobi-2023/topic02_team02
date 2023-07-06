@@ -54,9 +54,19 @@ def aa_distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
     return frame
 
 
-def dms_distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
-    """calculates the distances of the AA to each other based on the DMS-Scores when interchanged with another AA"""
+def dms_distance_matrix_wt(frame: pd.DataFrame) -> pd.DataFrame:
+    """calculates the distances of the wild-type AAs to each other based on the DMS-Scores when interchanged with
+    another AA"""
     frame_prep = dc.rmv_na(de.mean_substitutions(frame))
+    dms_distances = euclidean_distances(frame_prep.values)
+    frame_prep = pd.DataFrame(dms_distances, index=frame_prep.index, columns=frame_prep.index)
+    return frame_prep
+
+
+def dms_distance_matrix_mutated(frame: pd.DataFrame) -> pd.DataFrame:
+    """calculates the distances of the mutated AA to each other based on the DMS-Scores when interchanged with
+    another AA"""
+    frame_prep = dc.rmv_na(de.mean_substitutions(frame).T)
     dms_distances = euclidean_distances(frame_prep.values)
     frame_prep = pd.DataFrame(dms_distances, index=frame_prep.index, columns=frame_prep.index)
     return frame_prep
