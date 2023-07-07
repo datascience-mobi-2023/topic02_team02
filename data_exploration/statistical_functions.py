@@ -107,7 +107,7 @@ def determine_clusters_silhouette(dms_data: pd.DataFrame, min_clusters=2, max_cl
     return best_clusters
 
 
-def pca_hierarchical_plot (dist_matrix: pd.DataFrame, optimal_num_cluster: int, title: str):
+def pca_hierarchical_plot(dist_matrix: pd.DataFrame, optimal_num_cluster: int, title: str):
     """used to perform a pca on the provided distance matrix. Then, a hierarchical clustering on the pca_results is done.
      Output is a plot in which each datapoint is one AA, shown in the color of the cluster it belongs to."""
 
