@@ -213,3 +213,7 @@ mean_scoresKH = subs_df.DMS_score.mean()
 mean_scores_dfKH = mean_scoresKH.reset_index()
 mean_substitutionsKH = mean_scores_dfKH.pivot(index="AS_old", columns="AS_new", values="DMS_score")
 dc.rmv_na(mean_substitutionsKH)
+
+
+###############################
+# Domain comparison diagramms
