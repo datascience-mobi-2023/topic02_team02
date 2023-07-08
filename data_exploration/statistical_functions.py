@@ -1,5 +1,4 @@
 import pandas as pd
-import scipy.stats as stats
 import data_cleanup as dc
 import data_exploration as de
 import matplotlib.pyplot as plt
@@ -15,8 +14,7 @@ from scipy.spatial.distance import pdist
 
 
 def mean_substitutions(frame: pd.DataFrame) -> pd.DataFrame:
-    """aus einem Datensatz, den wir gegeben haben, direkt eine Matrix mit Mittelwerten des Austausches zu erstellen.
-    Zeilen in dem ausgegebenen DataFrame sind die alten AS, Spalten die neuen"""
+    """calculates the mean substitution values for each substitution directly from a DMS_data set."""
     # Check for dependencies
     if "AS_new" not in frame.columns:
         raise ValueError(f"Die Funktion 'aufteilung_mut_pos()' muss vorher ausgeführt werden.")
@@ -29,8 +27,8 @@ def mean_substitutions(frame: pd.DataFrame) -> pd.DataFrame:
 
 
 def mean_substitutions_inverted(frame: pd.DataFrame) -> pd.DataFrame:
-    """aus einem Datensatz, den wir gegeben haben, direkt eine Distanzmatrix zu erstellen. Zeilen in dem ausgegebenen
-    DataFrame sind die neuen AS, Spalten die alten"""
+    """calculate the inverted mean_substitutions matrix. Outdated and unnecessary, as instead mean_substitutions().T can
+    be used."""
 
     if "AS_new" and "AS_old" not in frame.columns:
         raise ValueError(f"Die Funktion 'aufteilung_mut_pos()' muss vorher ausgeführt werden.")
@@ -48,8 +46,8 @@ def aa_distance_matrix(frame: pd.DataFrame) -> pd.DataFrame:
     labels_column = 'Letter'
     aa_rmv = aa_nat.drop(['Name', 'Abbr', 'Letter', 'Molecular Formula', 'Molecular Weight', 'Residue Formula', 'pKx3'],
                          axis=1)
-    aa_zscore = dc.min_max_norm(aa_rmv.apply(stats.zscore))
-    aa_distances = euclidean_distances(aa_zscore.values)
+    normed_df = dc.norm(aa_rmv)
+    aa_distances = euclidean_distances(normed_df.values)
     frame = pd.DataFrame(aa_distances, index=aa_nat[labels_column], columns=aa_nat[labels_column])
     return frame
 
@@ -86,7 +84,7 @@ def plot_hier_clust(distance_matrix: pd.DataFrame, title: str):
 
 
 def determine_clusters_silhouette(dms_data: pd.DataFrame, min_clusters=2, max_clusters=10) -> int:
-    """determine optimal number of clusters for DMS_data, that was processed like this:
+    """determine optimal number of clusters using hierarchical clustering for DMS_data, that was processed like this:
     dc.rmv_na(dc.df_transform(DMS_data)). Not perfectly optimized, implemented to proof a concept"""
     best_score = -1
     best_clusters = 0
@@ -107,12 +105,16 @@ def determine_clusters_silhouette(dms_data: pd.DataFrame, min_clusters=2, max_cl
     return best_clusters
 
 
-def pca_hierarchical_plot(dist_matrix: pd.DataFrame, optimal_num_cluster: int, title: str):
-    """used to perform a pca on the provided distance matrix. Then, a hierarchical clustering on the pca_results is done.
-     Output is a plot in which each datapoint is one AA, shown in the color of the cluster it belongs to."""
+def pca_hierarchical_plot(dist_matrix: pd.DataFrame, optimal_num_cluster: int, title: str, show_var=False):
+    """used to perform a pca on the provided distance matrix. Then, a hierarchical clustering on the pca_results is
+    done. Output is a plot in which each datapoint is one AA, shown in the color of the cluster it belongs to. Showing
+    explained variance by first two PCs is optional."""
 
     pca = PCA(n_components=2)
     pca_data = pca.fit_transform(dist_matrix)
+
+    # Access explained variance ratio
+    explained_variance = pca.explained_variance_ratio_
 
     hc = linkage(pca_data, method='ward')
     num_clusters = optimal_num_cluster
@@ -130,4 +132,11 @@ def pca_hierarchical_plot(dist_matrix: pd.DataFrame, optimal_num_cluster: int, t
                      ha='center')
 
     plt.legend(title='Cluster', loc='lower right')
+
+    if show_var is True:
+        print(f"Explained variance for PCA of {title}:")
+        for i, ratio in enumerate(explained_variance):
+            print(f"PC{i + 1}: {ratio:.2f}")
+
     return plt.show()
+
