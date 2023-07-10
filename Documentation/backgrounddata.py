@@ -21,6 +21,11 @@ gia_null_nut_norm: pd.DataFrame = dc.norm(gia_null_nut)
 gia_wt_nut_norm: pd.DataFrame = dc.norm(gia_wt_nut)
 kot_hum_norm: pd.DataFrame = dc.norm(kot_hum)
 
+gia_null_eto_norm_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto_norm)
+gia_null_nut_norm_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_nut_norm)
+gia_wt_nut_norm_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_wt_nut_norm)
+kot_hum_norm_amp: pd.DataFrame = dc.aufteilung_mut_pos(kot_hum_norm)
+
 gia_null_eto_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto)
 gia_null_nut_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_nut)
 gia_wt_nut_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_wt_nut)
