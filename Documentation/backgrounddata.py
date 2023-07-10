@@ -21,17 +21,22 @@ gia_null_nut_norm: pd.DataFrame = dc.norm(gia_null_nut)
 gia_wt_nut_norm: pd.DataFrame = dc.norm(gia_wt_nut)
 kot_hum_norm: pd.DataFrame = dc.norm(kot_hum)
 
-gia_null_eto_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto)
-gia_null_nut_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_nut)
-gia_wt_nut_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_wt_nut)
-kot_hum_auf: pd.DataFrame = dc.aufteilung_mut_pos(kot_hum)
+gia_null_eto_norm_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto_norm)
+gia_null_nut_norm_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_nut_norm)
+gia_wt_nut_norm_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_wt_nut_norm)
+kot_hum_norm_amp: pd.DataFrame = dc.aufteilung_mut_pos(kot_hum_norm)
+
+#gia_null_eto_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto)
+#gia_null_nut_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_nut)
+#gia_wt_nut_auf: pd.DataFrame = dc.aufteilung_mut_pos(gia_wt_nut)
+#kot_hum_auf: pd.DataFrame = dc.aufteilung_mut_pos(kot_hum)
 
 gia_null_eto_df: pd.DataFrame = dc.df_transform(gia_null_eto)
 gia_null_nut_df: pd.DataFrame = dc.df_transform(gia_null_nut)
 gia_wt_nut_df: pd.DataFrame = dc.df_transform(gia_wt_nut)
 kot_hum_df: pd.DataFrame = dc.df_transform(kot_hum)
 
-kot_hum_auf_norm: pd.DataFrame = dc.norm(kot_hum_auf)
+#kot_hum_auf_norm: pd.DataFrame = dc.norm(kot_hum_auf)
 
 lowest_vals = pd.DataFrame(columns=['Name of the Dataset', 'Location of lowest DMS_score sum', "Sum", "Original AA"])
 
@@ -70,14 +75,6 @@ kot_hum_mean.name = 'kot_hum_mean'
 #%%
 mutated_p53 = ss.generate_codon_variations(ss.p53_codons_gia)
 aa = ss.translate_codons_df(mutated_p53)
-#%%
-# 1.1.) IMPORTING THE NATIVE DATASETS
-#%%
-gia_null_eto: pd.DataFrame = pd.read_csv('../DMS_data/P53_HUMAN_Giacomelli_NULL_Etoposide_2018.csv')
-gia_null_nut: pd.DataFrame = pd.read_csv('../DMS_data/P53_HUMAN_Giacomelli_NULL_Nutlin_2018.csv')
-gia_wt_nut: pd.DataFrame = pd.read_csv('../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv')
-kot_hum: pd.DataFrame = pd.read_csv('../DMS_data/P53_HUMAN_Kotler_2018.csv')
-#%%
 # PART 1 NUR SINGLE MUTATIONS
 #%%
 # 1.2.) INVERSE DF_TRAFO : NOTE : NO LONGER NEEDED, CHANGED FUNCTION SELECT_SMUT
@@ -153,17 +150,6 @@ def liniengraph(dataframes):
     plt.legend()
     plt.show()
 
-#
-gia_null_eto_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_eto)
-gia_null_nut_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_null_nut)
-gia_wt_nut_amp: pd.DataFrame = dc.aufteilung_mut_pos(gia_wt_nut)
-kot_hum_amp: pd.DataFrame = dc.aufteilung_mut_pos(kot_hum)
-
-gia_null_eto_amp_norm: pd.DataFrame = dc.norm(gia_null_eto_amp)
-gia_null_nut_amp_norm: pd.DataFrame = dc.norm(gia_null_nut_amp)
-gia_wt_nut_amp_norm: pd.DataFrame = dc.norm(gia_wt_nut_amp)
-kot_hum_amp_norm: pd.DataFrame = dc.norm(kot_hum_amp)
-
 # mean distance
 #%% md
 ## GIA NULL ETO
@@ -213,7 +199,5 @@ mean_scoresKH = subs_df.DMS_score.mean()
 mean_scores_dfKH = mean_scoresKH.reset_index()
 mean_substitutionsKH = mean_scores_dfKH.pivot(index="AS_old", columns="AS_new", values="DMS_score")
 dc.rmv_na(mean_substitutionsKH)
-
-
-###############################
+###############
 # Domain comparison diagramms
