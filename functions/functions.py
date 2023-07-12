@@ -23,9 +23,10 @@ def hmap(frame: pd.DataFrame) -> None:
     sns.set(font_scale=2)
     sns.heatmap(hmap_frame, cmap='seismic')
     plt.title('DMS Scores for Mutations')
+    plt.xlabel('Position and Wildtype AA')
+    plt.ylabel('Mutated AA')
     plt.show()
     return None
-
 
 def mult_hmap(Daten1: pd.DataFrame, Daten2: pd.DataFrame, Daten3: pd.DataFrame) -> None:
     fig, axes = plt.subplots(3, 1, figsize=(30, 20), sharex=True)
@@ -37,12 +38,16 @@ def mult_hmap(Daten1: pd.DataFrame, Daten2: pd.DataFrame, Daten3: pd.DataFrame) 
     for i, ax in enumerate(axes):
         hmap_frame: pd.DataFrame = frames[i].pivot(index='AS_new', columns=['position_mut', 'AS_old'], values='DMS_score')
         sns.heatmap(hmap_frame, cmap='seismic', ax=ax)
+        ax.set_title('Custom Title {}'.format(i+1))
+        if i < 3:
+            ax.set(ylabel='Mutated AA')
         ax.set_title('')
         if i < 2:
             ax.set(xlabel='')
         ax.text(0.05, 0.95, names[i], transform=ax.transAxes, fontsize=24,
                 verticalalignment='center', bbox=dict(facecolor='white', alpha=0.5))
     plt.tight_layout()
+    plt.xlabel('Position and Wildtype AA')
     plt.show()
 
 def df_mean(df: pd.DataFrame) -> pd.DataFrame:
@@ -120,8 +125,8 @@ def calculate_average_dms_score_old(*args):
 def hmap_mean_variance (df = pd.DataFrame) -> None:
     plt.figure(figsize=(50, 10))
     sns.heatmap(df, cmap='coolwarm', annot=True, fmt=".2f", linewidths=0.5)
-    plt.title('Heatmap of AS_new vs AS_old')
-    plt.xlabel('AS_new')
-    plt.ylabel('AS_old')
+    plt.title('Mean substitution Heatmap of Mutated AA vs Wildtype AA')
+    plt.xlabel('Mutated AA')
+    plt.ylabel('Wildtype AA')
     plt.show()
     return None
