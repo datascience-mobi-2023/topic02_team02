@@ -78,7 +78,7 @@ def plot_hier_clust(distance_matrix: pd.DataFrame, title: str):
     plt.figure(figsize=(10, 5))
     hierarchy.dendrogram(link, labels=distance_matrix.index)
     plt.title(f'Dendrogram of hierarchical clustering based on {title}')
-    plt.xlabel('Amino Acids')
+    plt.xlabel('amino acids')
     plt.ylabel('Distance')
     return plt.show()
 
