@@ -26,6 +26,19 @@ def mean_substitutions(frame: pd.DataFrame) -> pd.DataFrame:
     return mean_scores_df
 
 
+def direct_mean_subs(fpath: str):
+    """ does the same as mean_substitutions above, but with a more direct approach. Input is the path of a DMS_data
+    dataset, which is cleaned. Output is cleaned better than the function above """
+    df = pd.read_csv(fpath)
+    mutations_df = dc.aufteilung_mut_pos(df)
+    mutations_df_norm: pd.DataFrame = dc.norm(mutations_df)
+    subs_df = mutations_df_norm.groupby(["AS_old", "AS_new"])
+    mean_scores = subs_df.DMS_score.mean()
+    mean_scores_df = mean_scores.reset_index()
+    mean_subs = mean_scores_df.pivot(index="AS_old", columns="AS_new", values="DMS_score")
+    return dc.rmv_na(mean_subs)
+
+
 def mean_substitutions_inverted(frame: pd.DataFrame) -> pd.DataFrame:
     """calculate the inverted mean_substitutions matrix. Outdated and unnecessary, as instead mean_substitutions().T can
     be used."""
@@ -139,4 +152,3 @@ def pca_hierarchical_plot(dist_matrix: pd.DataFrame, optimal_num_cluster: int, t
             print(f"PC{i + 1}: {ratio:.2f}")
 
     return plt.show()
-
