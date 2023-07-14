@@ -152,3 +152,50 @@ def pca_hierarchical_plot(dist_matrix: pd.DataFrame, optimal_num_cluster: int, t
             print(f"PC{i + 1}: {ratio:.2f}")
 
     return plt.show()
+
+
+def calculate_average_dms_score_new(*args):
+    results = {}
+
+    for arg in args:
+        df_name = arg[0]
+        df = arg[1]
+        grouped = df.groupby('AS_new')
+        sums = grouped['DMS_score'].sum()
+        counts = grouped['DMS_score'].count()
+        averages = sums / counts
+        results[df_name] = averages
+
+    result_df = pd.DataFrame(results)
+    return result_df
+
+
+def calculate_average_dms_score_old(*args):
+    results = {}
+
+    for arg in args:
+        df_name = arg[0]
+        df = arg[1]
+        grouped = df.groupby('AS_old')
+        sums = grouped['DMS_score'].sum()
+        counts = grouped['DMS_score'].count()
+        averages = sums / counts
+        results[df_name] = averages
+
+    result_df = pd.DataFrame(results)
+    return result_df
+
+
+def df_mean(df: pd.DataFrame) -> pd.DataFrame:
+    #df_trafo: pd.DataFrame = dc.df_transform(df)
+    df_trafo_narmv: pd.DataFrame = dc.rmv_na(df)
+    df_trafo_narmv_mean = pd.DataFrame(columns=df_trafo_narmv.columns)
+
+    for column in df_trafo_narmv.columns:
+        if column != 'position_mut' and column != 'AS_old':
+            column_mean = df_trafo_narmv[column].mean()
+            df_trafo_narmv_mean.loc[0, column] = column_mean
+
+    df_trafo_narmv_mean = df_trafo_narmv_mean.reset_index(drop=True)
+
+    return df_trafo_narmv_mean

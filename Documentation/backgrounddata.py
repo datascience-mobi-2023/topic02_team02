@@ -1,10 +1,6 @@
-# IMPORTS
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import data_cleanup as dc
 import data_exploration as de
-import functions as fun
 import severity_score as ss
 
 ###################
@@ -53,10 +49,10 @@ GNELV = dc.low_val(gia_null_eto_norm, 5)
 GNEHV = dc.high_val(gia_null_eto_norm, 5)
 
 ####
-gia_null_eto_mean = fun.df_mean(gia_null_eto_df)
-gia_null_nut_mean = fun.df_mean(gia_null_nut_df)
-gia_wt_nut_mean = fun.df_mean(gia_wt_nut_df)
-kot_hum_mean = fun.df_mean(kot_hum_df)
+gia_null_eto_mean = de.df_mean(dc.aufteilung_mut_pos(gia_null_eto_df))
+gia_null_nut_mean = de.df_mean(dc.aufteilung_mut_pos(gia_null_nut_df))
+gia_wt_nut_mean = de.df_mean(dc.aufteilung_mut_pos(gia_wt_nut_df))
+kot_hum_mean = de.df_mean(dc.aufteilung_mut_pos(kot_hum_df))
 
 gia_null_eto_mean.name = 'gia_null_eto_mean'
 gia_null_nut_mean.name = 'gia_null_nut_mean'
@@ -64,7 +60,7 @@ gia_wt_nut_mean.name = 'gia_wt_nut_mean'
 kot_hum_mean.name = 'kot_hum_mean'
 ###########################
 
-# Liniendiagrammcode:
+# Line diagram code:
 # %%
 # RNA SEQUENCE AND SLICING
 # %%
@@ -119,10 +115,10 @@ kot_hum_z_mmn_df: pd.DataFrame = dc.df_transform(kot_hum_z_mmn)
 # %%
 # 2.4.) MEAN AN JEDER STELLE
 # %%
-gia_null_eto_z_mmn_df_mean: pd.DataFrame = fun.df_mean(gia_null_eto_z_mmn_df)
-gia_null_nut_z_mmn_df_mean: pd.DataFrame = fun.df_mean(gia_null_nut_z_mmn_df)
-gia_wt_nut_z_mmn_df_mean: pd.DataFrame = fun.df_mean(gia_wt_nut_z_mmn_df)
-kot_hum_z_mmn_df_mean: pd.DataFrame = fun.df_mean(kot_hum_z_mmn_df)
+gia_null_eto_z_mmn_df_mean: pd.DataFrame = de.df_mean(gia_null_eto_z_mmn_df)
+gia_null_nut_z_mmn_df_mean: pd.DataFrame = de.df_mean(gia_null_nut_z_mmn_df)
+gia_wt_nut_z_mmn_df_mean: pd.DataFrame = de.df_mean(gia_wt_nut_z_mmn_df)
+kot_hum_z_mmn_df_mean: pd.DataFrame = de.df_mean(kot_hum_z_mmn_df)
 # %%
 # 2.5.) LINIENGRAPH
 # %%
@@ -132,49 +128,22 @@ gia_wt_nut_z_mmn_df_mean.name = 'gia_wt_nut_z_mmn_df_mean'
 gia_null_eto_z_mmn_df_mean.name = 'gia_null_eto_z_mmn_df_mean'
 
 
-def linegraph(dataframes):
-    """ """
-    plt.figure(figsize=(35, 7))
-    for df in dataframes:
-        x = df.columns.get_level_values('position_mut').astype(int)
-        y = df.iloc[0].values.astype(float)
-        label = df.name
-        plt.plot(x, y, label=label, marker='o')
-    plt.xlabel('position')
-    plt.ylabel('DMS_score')
-    plt.title('Mean DMS_scores of different datasets throughout each position of tp53')
-    plt.xticks(np.arange(0, 393+1, 10))
-    plt.legend()
-    plt.show()
-
-
 # mean distance
 # %% md
 # GIA NULL ETO
-de.direct_mean_subs('../DMS_data/P53_HUMAN_Giacomelli_NULL_Etoposide_2018.csv')
-
+mean_substitutionsGNE = de.direct_mean_subs('../DMS_data/P53_HUMAN_Giacomelli_NULL_Etoposide_2018.csv')
 
 # %% md
 # GIA NULL NUT
 # %%
-de.direct_mean_subs('../DMS_data/P53_HUMAN_Giacomelli_NULL_Nutlin_2018.csv')
+mean_substitutionsGNN = de.direct_mean_subs('../DMS_data/P53_HUMAN_Giacomelli_NULL_Nutlin_2018.csv')
 
 # %% md
 # GIA WT NUT
 # %%
-de.direct_mean_subs('../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv')
+mean_substitutionsGWT = de.direct_mean_subs('../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv')
 
 # %% md
 # KOT HUM
 # %%
-de.direct_mean_subs('../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv')
-
-fpathKH = '../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv'
-dfKH = pd.read_csv(fpathKH)
-mutations_dfKH = dc.aufteilung_mut_pos(dfKH)
-mutations_dfKH_norm: pd.DataFrame = dc.norm(mutations_dfKH)
-subs_df = mutations_dfKH_norm.groupby(["AS_old", "AS_new"])
-mean_scoresKH = subs_df.DMS_score.mean()
-mean_scores_dfKH = mean_scoresKH.reset_index()
-mean_substitutionsKH = mean_scores_dfKH.pivot(index="AS_old", columns="AS_new", values="DMS_score")
-dc.rmv_na(mean_substitutionsKH)
+mean_substitutionsKH = de.direct_mean_subs('../DMS_data/P53_HUMAN_Giacomelli_WT_Nutlin_2018.csv')
