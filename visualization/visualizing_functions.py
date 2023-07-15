@@ -18,7 +18,7 @@ def hmap(frame: pd.DataFrame) -> None:
 
 
 def mult_hmap(data1: pd.DataFrame, data2: pd.DataFrame, data3: pd.DataFrame) -> None:
-    fig, axes = plt.subplots(3, 1, figsize=(30, 20), sharex=True)
+    fig, axes = plt.subplots(3, 1, figsize=(30, 20), sharex='all')
     sns.set(font_scale=2)
     frames = [data1, data2, data3]
     for frame in frames:
