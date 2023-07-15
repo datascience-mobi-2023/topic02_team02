@@ -49,10 +49,10 @@ GNELV = dc.low_val(gia_null_eto_norm, 5)
 GNEHV = dc.high_val(gia_null_eto_norm, 5)
 
 ####
-gia_null_eto_mean = de.df_mean(dc.aufteilung_mut_pos(gia_null_eto_df))
-gia_null_nut_mean = de.df_mean(dc.aufteilung_mut_pos(gia_null_nut_df))
-gia_wt_nut_mean = de.df_mean(dc.aufteilung_mut_pos(gia_wt_nut_df))
-kot_hum_mean = de.df_mean(dc.aufteilung_mut_pos(kot_hum_df))
+gia_null_eto_mean = de.df_mean(gia_null_eto_df)
+gia_null_nut_mean = de.df_mean(gia_null_nut_df)
+gia_wt_nut_mean = de.df_mean(gia_wt_nut_df)
+kot_hum_mean = de.df_mean(kot_hum_df)
 
 gia_null_eto_mean.name = 'gia_null_eto_mean'
 gia_null_nut_mean.name = 'gia_null_nut_mean'
