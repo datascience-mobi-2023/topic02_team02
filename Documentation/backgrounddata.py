@@ -31,7 +31,7 @@ lowest_vals = pd.DataFrame(columns=['Name of the Dataset', 'Location of lowest D
 
 lowest_vals['Name of the Dataset'] = ["Giacomelli Null Etoposide", "Giacomelli NULL Nutlin", "Giacomelli WT Nutlin",
                                       "Kotler"]
-lowest_vals['Location of lowest DMS_score sum'] = [280, 205, 245, 245]
+lowest_vals['Location of lowest mean DMS_score'] = [280, 205, 245, 245]
 lowest_vals['Sum'] = [-6.190289, -13.762829, -15.419176, -6.568038]
 lowest_vals['Original AA'] = ['R', 'Y', 'G', "G"]
 
