@@ -26,6 +26,19 @@ def mean_substitutions(frame: pd.DataFrame) -> pd.DataFrame:
     return mean_scores_df
 
 
+def direct_mean_subs(fpath: str):
+    """ does the same as mean_substitutions above, but with a more direct approach. Input is the path of a DMS_data
+    dataset, which is cleaned. Output is cleaned better than the function above """
+    df = pd.read_csv(fpath)
+    mutations_df = dc.aufteilung_mut_pos(df)
+    mutations_df_norm: pd.DataFrame = dc.norm(mutations_df)
+    subs_df = mutations_df_norm.groupby(["AS_old", "AS_new"])
+    mean_scores = subs_df.DMS_score.mean()
+    mean_scores_df = mean_scores.reset_index()
+    mean_subs = mean_scores_df.pivot(index="AS_old", columns="AS_new", values="DMS_score")
+    return dc.rmv_na(mean_subs)
+
+
 def mean_substitutions_inverted(frame: pd.DataFrame) -> pd.DataFrame:
     """calculate the inverted mean_substitutions matrix. Outdated and unnecessary, as instead mean_substitutions().T can
     be used."""
@@ -140,3 +153,49 @@ def pca_hierarchical_plot(dist_matrix: pd.DataFrame, optimal_num_cluster: int, t
 
     return plt.show()
 
+
+def calculate_average_dms_score_new(*args):
+    results = {}
+
+    for arg in args:
+        df_name = arg[0]
+        df = arg[1]
+        grouped = df.groupby('AS_new')
+        sums = grouped['DMS_score'].sum()
+        counts = grouped['DMS_score'].count()
+        averages = sums / counts
+        results[df_name] = averages
+
+    result_df = pd.DataFrame(results)
+    return result_df
+
+
+def calculate_average_dms_score_old(*args):
+    results = {}
+
+    for arg in args:
+        df_name = arg[0]
+        df = arg[1]
+        grouped = df.groupby('AS_old')
+        sums = grouped['DMS_score'].sum()
+        counts = grouped['DMS_score'].count()
+        averages = sums / counts
+        results[df_name] = averages
+
+    result_df = pd.DataFrame(results)
+    return result_df
+
+
+def df_mean(df: pd.DataFrame) -> pd.DataFrame:
+    #df_trafo: pd.DataFrame = dc.df_transform(df)
+    df_trafo_narmv: pd.DataFrame = dc.rmv_na(df)
+    df_trafo_narmv_mean = pd.DataFrame(columns=df_trafo_narmv.columns)
+
+    for column in df_trafo_narmv.columns:
+        if column != 'position_mut' and column != 'AS_old':
+            column_mean = df_trafo_narmv[column].mean()
+            df_trafo_narmv_mean.loc[0, column] = column_mean
+
+    df_trafo_narmv_mean = df_trafo_narmv_mean.reset_index(drop=True)
+
+    return df_trafo_narmv_mean

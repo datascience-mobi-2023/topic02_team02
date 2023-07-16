@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
 import data_cleanup as dc
-from Bio.Seq import Seq
-import severity_score as ses
 import random
 import itertools
 
@@ -200,11 +198,8 @@ def generate_codon_variations_rdm(codons: list) -> pd.DataFrame:
     return variation_matrix
 
 
-
-
 if __name__ == '__main__':
 
     gia_null_eto: pd.DataFrame = pd.read_csv('../DMS_data/P53_HUMAN_Giacomelli_NULL_Etoposide_2018.csv')
 
     pass
-

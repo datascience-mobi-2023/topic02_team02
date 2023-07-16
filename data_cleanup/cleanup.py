@@ -1,4 +1,3 @@
-## all added functions are to be declared in the init file, to ensure effortless usage
 import pandas as pd
 import data_cleanup as dc
 import scipy.stats as stats
@@ -101,7 +100,7 @@ def high_val(df: pd.DataFrame, num_high: int, ) -> pd.DataFrame:
     sum_df = pd.DataFrame(gia_null_eto_dft_narm.sum(), columns=['Sum'])
     highest_values = sum_df.nlargest(num_high, "Sum")
     # print(f"\nHighest {num_high} values in Sum :")
-    #print(highest_values)
+    # print(highest_values)
 
     return highest_values
 
@@ -122,9 +121,21 @@ def clean_aa(frame: pd.DataFrame) -> pd.DataFrame:
     """calculate the cleaned Dataset for the chemical properties of AAs"""
     aa_nat = frame.drop(index=[12, 18])
     labels_column = 'Letter'
-    aa_rmv = aa_nat.drop(['Name', 'Abbr', 'Letter', 'Molecular Formula', 'Molecular Weight', 'Residue Formula', 'pKx3'], axis=1)
+    aa_rmv = aa_nat.drop(['Name', 'Abbr', 'Letter', 'Molecular Formula', 'Molecular Weight', 'Residue Formula', 'pKx3'],
+                         axis=1)
     aa_zscore = dc.min_max_norm(aa_rmv.apply(stats.zscore))
     frame = pd.DataFrame(aa_zscore.values, index=aa_nat[labels_column], columns=aa_rmv.columns)
+    return frame
+
+
+def load_data_frame(file_path: list) -> pd.DataFrame:
+    """Load list of .csv files into one data Frame"""
+    # list comprehensions are better practice
+    container: list = [pd.read_csv(filename, index_col=None, header=0) for filename in file_path]
+
+    # transformation into data frame (dict)
+    frame = pd.concat(container, axis=0, ignore_index=True)
+    print("The frame has been successfully loaded")
     return frame
 
 
