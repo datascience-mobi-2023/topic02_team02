@@ -13,12 +13,12 @@ _Jan Mathony_  ([jan.mathony@tu-darmstadt.de](mailto:jan.mathony@tu-darmstadt.de
 Tutor: _Benedict Wolf_ ([b.wolf@stud.uni-heidelberg.de](mailto:b.wolf@stud.uni-heidelberg.de))    
 
 
-Introduction
-------------
-
-
 Research Question
 ----------
+With our project, we wanted to investigate whether the DNA binding domain, as a very essential domain of p53, is less prone
+to mutations that are more likely to occur by chance. To do so, we inspected the datasets on p53 for the full length and
+domain-wise, among other things. Furthermore, we invented a basic method to determine each mutation's probability to answer
+our research question.
 
 
 Structure of this repository
@@ -27,7 +27,7 @@ First of all: To run our code, one has to download the data from the link suppli
 will not be able to load the data. The "DMS_data" folder must then be a direct subdirectory of topic02_team02.
 
 In our repository, the final notebook, that generates all important plots is found in the Documentation folder and is called [P53_DMS_Documentation.ipynb](Documentation/P53_DMS_Documentation.ipynb).
-Within our Documentation, you will find **five sub-topics**. The first one looks at the Comparability of p53 Datasets.
+The [report (as a pdf)](Documentation/report_DMS_topic02_team02.pdf) can be found in the same folder. Within our Documentation, you will find **five sub-topics**. The first one looks at the Comparability of p53 Datasets.
 The code generating the relevant plots can be found [within the Documentation folder](Documentation/backgrounddata.py) and 
 for visualization purposes, that might also be used later on, code from the [Visualization folder](visualization) was used.
 The code for plots on the other four topics can be found here: 
