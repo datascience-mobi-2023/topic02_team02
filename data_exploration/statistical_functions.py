@@ -187,7 +187,7 @@ def calculate_average_dms_score_old(*args):
 
 
 def df_mean(df: pd.DataFrame) -> pd.DataFrame:
-    #df_trafo: pd.DataFrame = dc.df_transform(df)
+    # df_trafo: pd.DataFrame = dc.df_transform(df)
     df_trafo_narmv: pd.DataFrame = dc.rmv_na(df)
     df_trafo_narmv_mean = pd.DataFrame(columns=df_trafo_narmv.columns)
 
